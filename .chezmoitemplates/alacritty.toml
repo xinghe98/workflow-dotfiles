@@ -12,9 +12,13 @@ COLORTERM = "truecolor"
 osc52 = "OnlyCopy"
 
 [terminal.shell]
-program = "{{ if eq .chezmoi.os "windows" }}nu{{ else }}zsh{{ end }}"
+{{ if eq .chezmoi.os "windows" -}}
+program = "zellij"
+args = ["attach", "--create", "main"]
+{{ else -}}
+program = "zsh"
 args = []
-
+{{- end }}
 [window]
 padding = { x = 8, y = 10 }
 dynamic_padding = false
