@@ -1,0 +1,13 @@
+* text=auto
+*.tmpl text eol=lf
+.chezmoiignore text eol=lf
+.gitattributes text eol=lf
+
+*.toml text eol=lf
+*.kdl text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.ts text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf

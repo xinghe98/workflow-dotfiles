@@ -1,0 +1,15 @@
+{{- if ne .chezmoi.os "windows" }}
+AppData/Roaming/alacritty
+{{- end }}
+
+.omp/agent/*.db
+.omp/agent/*.db-wal
+.omp/agent/*.db-shm
+.omp/agent/sessions
+.omp/agent/terminal-sessions
+.omp/agent/blobs
+.omp/agent/cache
+.omp/agent/secrets.yml
+.omp/agent/secret-placeholder.key
+.omp/agent/last-changelog-version
+.omp/agent/settings.json.bak
