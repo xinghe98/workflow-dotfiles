@@ -2,6 +2,7 @@ README.md
 
 {{- if eq .chezmoi.os "windows" }}
 .config/alacritty
+.config/kitty
 {{- else }}
 AppData/Roaming/alacritty
 {{- end }}

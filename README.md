@@ -1,12 +1,12 @@
 # Workflow Dotfiles
 
-使用 chezmoi 和 Git 管理 Zellij、OMP、Alacritty 配置。
+使用 chezmoi 和 Git 管理 Zellij、OMP、Alacritty、Kitty 配置。
 
-| 平台 | 默认 Shell | Alacritty 配置位置 |
-|---|---|---|
-| Windows | Nushell | `%APPDATA%\alacritty\alacritty.toml` |
-| macOS | zsh | `~/.config/alacritty/alacritty.toml` |
-| Linux | zsh | `~/.config/alacritty/alacritty.toml` |
+| 平台 | 默认 Shell | Alacritty 配置位置 | Kitty 配置位置 |
+|---|---|---|---|
+| Windows | Nushell | `%APPDATA%\alacritty\alacritty.toml` | 不管理 |
+| macOS | zsh | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
+| Linux | zsh | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
 
 应用前请确保 `nu` 或 `zsh` 已安装并位于 `PATH`。
 
@@ -79,6 +79,17 @@ macOS / Linux：
 ```zsh
 chezmoi edit --apply ~/.config/alacritty/alacritty.toml
 ```
+
+### Kitty
+
+macOS / Linux：
+
+```zsh
+chezmoi edit --apply ~/.config/kitty/kitty.conf
+chezmoi edit --apply ~/.config/kitty/current-theme.conf
+```
+
+Windows 不部署 Kitty。
 
 ## 更新并同步
 

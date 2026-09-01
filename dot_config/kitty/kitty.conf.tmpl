@@ -1,0 +1,192 @@
+# Performance
+repaint_delay                   6
+input_delay                     1
+sync_to_monitor                 no
+
+# Font settings
+font_size                       20.0
+disable_ligatures               cursor
+
+# macOS 字体渲染与排版增强（Retina 高清防发虚、舒适行高）
+text_composition_strategy       1.7 30
+modify_font cell_height         112%
+modify_font baseline            0px
+
+# Mouse
+copy_on_select                  yes
+strip_trailing_spaces           always
+
+# Cursor
+cursor_shape                    block
+cursor_trail          3
+
+# Window layout
+window_border_width             1px
+hide_window_decorations         no
+window_padding_width            8
+remember_window_size            no
+initial_window_width            130c
+initial_window_height           33c
+
+# Bell
+enable_audio_bell               no
+window_alert_on_bell            yes
+bell_on_tab                     no
+
+# Tab Bar（使用 Zellij 管理窗格，不显示 Kitty 标签栏）
+tab_bar_style                   hidden
+
+# 鼠标操作：中键关闭标签，双击新建标签
+mouse_map middle  release ungrabbed close_tab
+mouse_map left    double_press ungrabbed new_tab
+
+# Advance
+shell_integration               enabled no-cursor
+update_check_interval           0
+
+# Nord Colorscheme for Kitty
+# Based on:
+# - https://gist.github.com/marcusramberg/64010234c95a93d953e8c79fdaf94192
+# - https://github.com/arcticicestudio/nord-hyper
+# foreground              #e0def4
+# background              #12121e
+# selection_foreground    #12121e
+# selection_background    #FFFACD
+# url_color               #9ccfd8
+# cursor                  #cccccc
+
+# black
+# color0   #3B4252
+# color8   #4C566A
+
+# red
+# color1   #FF789E
+# color9   #FF789E
+
+# green
+# color2   #A3BE8C
+# color10  #A3BE8C
+
+# yellow
+# color3   #f6c177
+# color11  #f6c177
+
+# blue
+# color4  #81A1C1
+# color12 #81A1C1
+
+# magenta
+# color5   #c4a7e7
+# color13  #c4a7e7
+
+# cyan
+# color6   #9ccfd8
+# color14  #8FBCBB
+
+# white
+# color7   #E5E9F0
+# color15  #ECEFF4
+
+# Windows
+# active_border_color     #f6c177
+# inactive_border_color   #12121e
+
+# Tabs
+# active_tab_foreground   #12121e
+# active_tab_background   #9ccfd8
+active_tab_font_style   bold
+# inactive_tab_foreground #e0def4
+# inactive_tab_background #12121e
+inactive_tab_font_style normal
+
+# 透明度 / 磨砂
+# background_blur 仅在 Wayland 合成器（如 Hyprland）下有效，
+# 由合成器在窗口背后渲染模糊层；macOS 无此协议，参数被忽略。
+# macOS 下改用低透明度 + 暖色背景色模拟磨砂质感。
+background_opacity              0.92
+background_blur                 30
+
+# ####### Keyboard Shortcuts #######
+#
+# ## Misc
+# # map alt+ctrl+shift+g launch --cwd=current gitui
+#
+# ## Tab management
+map alt+t       new_tab_with_cwd
+map alt+q       close_tab
+map alt+r       set_tab_title
+# map alt+c new_tab
+# map kitty_mod+enter new_tab
+#
+map alt+1 goto_tab 1
+map alt+2 goto_tab 2
+map alt+3 goto_tab 3
+map alt+4 goto_tab 4
+map alt+5 goto_tab 5
+map alt+6 goto_tab 6
+map alt+7 goto_tab 7
+map alt+8 goto_tab 8
+map alt+9 goto_tab 9
+#
+# ## Window management
+map alt+enter   new_window_with_cwd
+#
+# map alt+v toggle_layout tall
+# map alt+s toggle_layout grid
+#
+# Zellij uses Alt+n/e/u/i for pane focus (Colemak). Do not bind them here.
+# map alt+n neighboring_window left
+# map alt+e neighboring_window bottom
+# map alt+u neighboring_window top
+# map alt+i neighboring_window right
+map alt+w  close_window
+map alt+[ previous_tab
+map alt+] next_tab
+# Encode Ctrl+Tab explicitly: legacy terminal input aliases it to Tab.
+map ctrl+tab send_text all \x1b[9;5u
+map ctrl+shift+tab send_text all \x1b[9;6u
+map alt+n send_key alt+n
+map alt+e send_key alt+e
+map alt+u send_key alt+u
+map alt+i send_key alt+i
+map alt+shift+n send_key alt+shift+n
+map alt+shift+e send_key alt+shift+e
+map alt+shift+u send_key alt+shift+u
+map alt+shift+i send_key alt+shift+i
+
+#
+# map alt+shift+h move_window left
+# map alt+shift+j move_window bottom
+# map alt+shift+k move_window top
+# map alt+shift+l move_window right
+#
+# # map alt+shift+1 move_window left
+# # map alt+shift+2 move_window bottom
+# # map alt+shift+3 move_window top
+# # map alt+shift+4 move_window right
+# # map alt+shift+5 move_window right
+# # map alt+shift+6 move_window right
+# # map alt+shift+7 move_window right
+# # map alt+shift+8 move_window right
+# # map alt+shift+9 move_window right
+# map kitty_mod+f4 detach_window ask
+
+
+# BEGIN_KITTY_THEME
+# Tokyo Night
+include current-theme.conf
+# END_KITTY_THEME
+
+# BEGIN_KITTY_FONTS
+font_family      family="Maple Mono NF CN"
+bold_font        auto
+italic_font      auto
+bold_italic_font auto
+# END_KITTY_FONTS
+{{- if eq .chezmoi.os "darwin" }}
+
+# macOS Option key as Alt (enables <M-x> mappings in Vim / Zellij Alt bindings)
+macos_option_as_alt                 left
+# 让标题栏颜色与终端背景融合，消除灰色分隔条
+macos_titlebar_color            background
+{{- end }}
