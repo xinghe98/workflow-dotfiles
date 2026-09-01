@@ -1,4 +1,4 @@
-shellPath: "{{ if eq .chezmoi.os "windows" }}nu{{ else }}zsh{{ end }}"
+shellPath: {{ if eq .chezmoi.os "windows" }}{{ lookPath "nu" | quote }}{{ else if eq .chezmoi.os "darwin" }}"/bin/zsh"{{ else }}"/usr/bin/zsh"{{ end }}
 providers:
   webSearchOrder:
     []
