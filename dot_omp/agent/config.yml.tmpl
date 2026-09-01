@@ -1,4 +1,4 @@
-shellPath: C:\WINDOWS\system32\bash.exe
+shellPath: "{{ if eq .chezmoi.os "windows" }}nu{{ else }}zsh{{ end }}"
 providers:
   webSearchOrder:
     []

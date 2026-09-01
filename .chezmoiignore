@@ -1,6 +1,8 @@
 README.md
 
-{{- if ne .chezmoi.os "windows" }}
+{{- if eq .chezmoi.os "windows" }}
+.config/alacritty
+{{- else }}
 AppData/Roaming/alacritty
 {{- end }}
 

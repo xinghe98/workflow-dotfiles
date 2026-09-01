@@ -1,9 +1,8 @@
-# Alacritty 0.17 configuration
-# Matched to C:\Users\mysta\.config\wezterm as closely as Alacritty supports.
+# Alacritty 0.17 cross-platform configuration
 
 [general]
 live_config_reload = true
-working_directory = "C:\\Users\\mysta"
+working_directory = {{ .chezmoi.homeDir | quote }}
 
 [env]
 TERM = "xterm-256color"
@@ -13,7 +12,7 @@ COLORTERM = "truecolor"
 osc52 = "OnlyCopy"
 
 [terminal.shell]
-program = "C:\\Users\\mysta\\AppData\\Local\\Programs\\nu\\bin\\nu.exe"
+program = "{{ if eq .chezmoi.os "windows" }}nu{{ else }}zsh{{ end }}"
 args = []
 
 [window]
@@ -24,9 +23,9 @@ decorations_theme_variant = "Dark"
 opacity = 0.90
 startup_mode = "Maximized"
 dynamic_title = true
-
-# Alacritty has no Windows Acrylic backend. The 0.80 opacity above is the
-# closest native equivalent; window.blur only works on macOS/KDE Wayland.
+{{ if eq .chezmoi.os "darwin" }}
+option_as_alt = "Both"
+{{ end }}
 
 [scrolling]
 history = 5000
@@ -34,15 +33,17 @@ multiplier = 3
 
 [font]
 size = 18.0
+{{ if eq .chezmoi.os "windows" }}
 normal = { family = "Consolas Nerd Font", style = "Regular" }
 bold = { family = "Consolas Nerd Font", style = "Bold" }
 italic = { family = "Consolas Nerd Font", style = "Italic" }
 bold_italic = { family = "Consolas Nerd Font", style = "Bold Italic" }
+{{ end }}
 offset = { x = 0, y = 0 }
 glyph_offset = { x = 0, y = 0 }
 builtin_box_drawing = true
 
-# Catppuccin Mocha (same scheme selected by WezTerm).
+# Catppuccin Mocha
 [colors.primary]
 background = "#1E1E2E"
 foreground = "#CDD6F4"
@@ -128,27 +129,18 @@ hide_when_typing = true
 
 [keyboard]
 bindings = [
-  # WezTerm-like copy mode, search, fullscreen, copy and paste.
   { key = "F1", action = "ToggleViMode" },
   { key = "F11", action = "ToggleFullscreen" },
   { key = "F", mods = "Control|Alt", action = "SearchForward" },
   { key = "C", mods = "Control|Shift", action = "Copy" },
   { key = "V", mods = "Control|Shift", action = "Paste" },
-
-  # Alacritty has no tabs on Windows, so the new-tab shortcut opens a window.
   { key = "T", mods = "Control|Shift", action = "CreateNewWindow" },
   { key = "W", mods = "Control|Alt|Shift", action = "Quit" },
-
-  # Preserve the existing Zellij tab-control sequences from WezTerm.
   { key = "Tab", mods = "Control", chars = "\u0014e\u0014" },
   { key = "Tab", mods = "Control|Shift", chars = "\u0014n\u0014" },
-
-  # Match the WezTerm font-size shortcuts.
   { key = "ArrowUp", mods = "Control|Alt", action = "IncreaseFontSize" },
   { key = "ArrowDown", mods = "Control|Alt", action = "DecreaseFontSize" },
   { key = "R", mods = "Control|Alt", action = "ResetFontSize" },
-
-  # Distinct Ctrl+Enter for OMP (queue vs interrupt). Kitty CSI-u: Enter+Ctrl.
   { key = "Return", mods = "Control", chars = "\u001b[13;5u" },
   { key = "NumpadEnter", mods = "Control", chars = "\u001b[13;5u" },
 ]
