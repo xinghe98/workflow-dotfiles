@@ -1,4 +1,9 @@
 sourceDir = {{ joinPath .chezmoi.homeDir "Documents/workflow-dotfiles" | quote }}
+encryption = "age"
+
+[age]
+    identity = {{ joinPath .chezmoi.homeDir ".config/chezmoi/age-key.txt" | quote }}
+    recipient = "age1mu6rlyjf0dj0uqm6vzfxvhx8w4ypedfmy5xguh7x56uakhrxea5su0mg3r"
 
 [edit]
     command = "nvim"

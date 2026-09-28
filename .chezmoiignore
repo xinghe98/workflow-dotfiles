@@ -5,6 +5,7 @@ README.md
 .config/kitty
 {{- else }}
 AppData/Roaming/alacritty
+AppData/Local/Zeron
 {{- end }}
 
 .omp/agent/*.db
@@ -18,3 +19,28 @@ AppData/Roaming/alacritty
 .omp/agent/secret-placeholder.key
 .omp/agent/last-changelog-version
 .omp/agent/settings.json.bak
+
+# 解密私钥仅保留在本机，另行安全备份。
+.config/chezmoi/age-key.txt
+
+# OpenCode 只管理配置、命令、主题、技能和依赖声明。
+.config/opencode/.git
+.config/opencode/.agents
+.config/opencode/node_modules
+.config/opencode/*.bak*
+.config/opencode/auth.json
+.local/share/opencode
+.local/state/opencode
+.cache/opencode
+
+# Zeron 不同步账户、设备身份、会话、日志和下载缓存。
+AppData/Local/Zeron/adapters
+AppData/Local/Zeron/agent-accounts
+AppData/Local/Zeron/logs
+AppData/Local/Zeron/model-catalogs
+AppData/Local/Zeron/orgs
+AppData/Local/Zeron/profiles
+AppData/Local/Zeron/device-id*
+AppData/Local/Zeron/engine.lock*
+AppData/Local/Zeron/local-profile.json
+AppData/Local/Zeron/session.json
