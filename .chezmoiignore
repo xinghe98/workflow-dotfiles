@@ -7,6 +7,8 @@ README.md
 AppData/Roaming/alacritty
 AppData/Roaming/Zellij
 AppData/Local/Zeron
+AppData/Roaming/herdr
+AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
 {{- end }}
 
 .omp/agent/*.db
@@ -45,3 +47,13 @@ AppData/Local/Zeron/device-id*
 AppData/Local/Zeron/engine.lock*
 AppData/Local/Zeron/local-profile.json
 AppData/Local/Zeron/session.json
+
+# Herdr: only config.toml is managed; runtime and installed packages stay local.
+.herdr
+AppData/Local/herdr
+AppData/Roaming/herdr/session*.json
+AppData/Roaming/herdr/sessions
+AppData/Roaming/herdr/*.log
+AppData/Roaming/herdr/*.sock
+AppData/Roaming/herdr/*.lock
+AppData/Roaming/herdr/.plugins.lock

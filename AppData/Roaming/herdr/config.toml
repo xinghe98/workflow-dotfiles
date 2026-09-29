@@ -1,0 +1,82 @@
+onboarding = false
+
+# Match the Windows Zellij Catppuccin Mocha theme and Nushell.
+[theme]
+name = "catppuccin"
+
+auto_switch = false
+[terminal]
+default_shell = "nu.exe"
+new_cwd = "follow"
+
+# Herdr has one prefix, not Zellij's separate pane/tab/move modes.
+[keys]
+prefix = "ctrl+t"
+focus_pane_left = ["alt+n", "alt+left", "prefix+n", "prefix+left"]
+focus_pane_down = ["alt+e", "alt+down", "prefix+down"]
+focus_pane_up = ["alt+u", "alt+up", "prefix+up"]
+focus_pane_right = ["alt+i", "alt+right", "prefix+i", "prefix+right"]
+swap_pane_left = ["alt+shift+n", "prefix+shift+n"]
+swap_pane_down = ["alt+shift+e", "prefix+shift+e"]
+swap_pane_up = ["alt+shift+u", "prefix+shift+u"]
+swap_pane_right = ["alt+shift+i", "prefix+shift+i"]
+navigate_pane_left = "n"
+navigate_pane_down = "alt+e"
+navigate_pane_up = "alt+u"
+navigate_pane_right = "i"
+navigate_workspace_up = ["u", "up"]
+navigate_workspace_down = ["e", "down"]
+previous_workspace = "prefix+u"
+next_workspace = "prefix+e"
+workspace_picker = "prefix+space"
+
+# Zellij's automatic NewPane becomes an explicit right split.
+split_vertical = ["alt+o", "prefix+r"]
+split_horizontal = "prefix+d"
+zoom = ["alt+f", "prefix+f"]
+close_pane = "prefix+w"
+rename_pane = "prefix+c"
+
+new_tab = "prefix+o"
+previous_tab = ["ctrl+shift+tab", "prefix+,"]
+next_tab = ["ctrl+tab", "prefix+."]
+switch_tab = ["ctrl+1..9", "prefix+1..9"]
+close_tab = "prefix+shift+w"
+
+resize_mode = ["ctrl+n", "prefix+ctrl+n"]
+resize_pane_left = "ctrl+alt+n"
+resize_pane_down = "ctrl+alt+e"
+resize_pane_up = "ctrl+alt+u"
+resize_pane_right = "ctrl+alt+i"
+
+# Move defaults that conflict with Colemak focus/swap or pane creation.
+edit_scrollback = "prefix+shift+v"
+new_workspace = "prefix+shift+o"
+rename_workspace = "prefix+shift+c"
+open_notification_target = "prefix+shift+a"
+
+[ui]
+status_indicators = "dots"
+pane_borders = "always"
+
+# 常驻 prefix/命令提示（对齐 Zellij 底部状态栏）：标签行放到底部，
+# 右侧固定显示 prefix 与最常用命令；完整键位表用 prefix+? 打开。
+tab_bar_position = "bottom"
+tab_bar_right = [
+  { type = "text", text = "prefix ^T" },
+  { type = "text", text = "^T ? help" },
+  { type = "text", text = "^T o tab" },
+  { type = "text", text = "^T q detach" },
+]
+tab_bar_right_separator = "  "
+
+hide_tab_bar_when_single_tab = false
+prompt_new_tab_name = false
+mouse_capture = true
+copy_on_select = true
+
+[ui.sound]
+enabled = true
+
+[ui.toast]
+delivery = "herdr"

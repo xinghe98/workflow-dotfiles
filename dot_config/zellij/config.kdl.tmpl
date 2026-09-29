@@ -50,7 +50,7 @@ keybinds clear-defaults=true {
         bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "normal"; }
         bind "Ctrl t" { SwitchToMode "normal"; }
-        bind "x" { CloseTab; SwitchToMode "normal"; }
+        bind "w" { CloseTab; SwitchToMode "normal"; }
     }
     resize {
         bind "left" { Resize "Increase left"; }
@@ -174,11 +174,9 @@ keybinds clear-defaults=true {
         bind "Alt Shift i" { MovePane "right"; }
         // bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
-        bind "Alt Shift w" { CloseFocus; }
         bind "Alt q" { Quit; }
         bind "Ctrl tab" { GoToNextTab; }
         bind "Ctrl Shift tab" { GoToPreviousTab; }
-        bind "Ctrl Shift w" { CloseTab; }
     }
     shared_except "locked" "move" {
         bind "Ctrl h" { SwitchToMode "move"; }
