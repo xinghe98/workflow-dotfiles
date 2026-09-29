@@ -5,6 +5,7 @@ README.md
 .config/kitty
 {{- else }}
 AppData/Roaming/alacritty
+AppData/Roaming/Zellij
 AppData/Local/Zeron
 {{- end }}
 

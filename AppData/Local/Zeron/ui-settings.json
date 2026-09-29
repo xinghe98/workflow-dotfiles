@@ -1,10 +1,10 @@
 {
   "windowGeometry": {
     "displayUuid": "92ad53a4-b389-52ef-afab-a27406d2e276",
-    "x": 610.0,
-    "y": 223.0,
+    "x": 1239.0,
+    "y": 8.0,
     "width": 1320.0,
-    "height": 1093.0
+    "height": 1085.0
   },
   "composerSendBehavior": "enter",
   "skillsInSlashMenu": false,
@@ -31,7 +31,7 @@
   "notificationsBackgroundOnly": true,
   "filesPanelWidth": 286.0,
   "agentUpdateNotifications": true,
-  "rightPaneWidth": 1029.0,
+  "rightPaneWidth": 794.0,
   "rightPaneOpen": false,
   "terminalHeight": 280.0,
   "terminalOpen": false,
@@ -61,7 +61,7 @@
     ]
   },
   "escapeStopsActiveAgent": false,
-  "settingsSection": "general",
+  "settingsSection": "providers",
   "appearance": "system",
   "gitHistoryColumns": {
     "author": true,
@@ -98,7 +98,7 @@
   "filesAutosaveEnabled": false,
   "filesAutosaveDelayMs": 900,
   "filesWordWrap": false,
-  "filesShowAll": false,
+  "filesShowAll": true,
   "accent": {
     "preset": "amber"
   },

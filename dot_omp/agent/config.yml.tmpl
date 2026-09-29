@@ -1,18 +1,15 @@
 shellPath: {{ if eq .chezmoi.os "windows" }}{{ lookPath "nu" | quote }}{{ else if eq .chezmoi.os "darwin" }}"/bin/zsh"{{ else }}"/usr/bin/zsh"{{ end }}
-providers:
-  webSearchOrder:
-    []
 modelRoles:
-  default: cursor/cursor-grok-4.6:high
-  plan: openai-codex/gpt-5.6-sol:high
-  task: openai-codex/gpt-5.6-luna:max
-  smol: openai-codex/gpt-5.6-luna:max
-  tiny: deepseek/deepseek-v4-flash:max
-  slow: google-antigravity/gemini-3.7-flash:high
-  designer: xai-oauth/grok-4.6:high
-  commit: opencode-go/deepseek-v4-flash:max
+  default: openai-codex/gpt-6-astra:high
+  plan: openai-codex/gpt-6-astra:high
+  task: opencode-go/deepseek-v4.1-flash:max
+  smol: xai-oauth/grok-4.7:high
+  tiny: opencode-go/deepseek-v4.1-flash:max
+  slow: opencode-go/deepseek-v4.1-flash:max
+  designer: kimi-code/k3:max
+  commit: opencode-go/deepseek-v4.1-flash:max
   vision: google-antigravity/gemini-3.7-flash:high
-  advisor: openai-codex/gpt-5.6-luna:max
+  advisor: google-antigravity/gemini-3.8-flash:high
 symbolPreset: nerd
 theme:
   light: light-catppuccin
@@ -25,8 +22,19 @@ dev:
   autoqaConsent: granted
 defaultThinkingLevel: auto
 composer:
-  shape: box
+  shape: claude
 task:
   agentModelOverrides:
     task: "@task"
     designer: "@designer"
+    reviewer: openai-codex/gpt-6-astra:high
+compaction:
+  methodOrder:
+    - snapcompact
+    - handoff
+    - shake
+    - soft
+terminal:
+  showProgress: true
+display:
+  showTokenUsage: true

@@ -63,6 +63,20 @@ chezmoi diff
 chezmoi edit --apply ~/.config/zellij/config.kdl
 ```
 
+Tab 快捷键：`Ctrl+1`～`Ctrl+9` 切换到第 1～9 个 tab，`Ctrl+0` 切换到第 10 个；
+锁定模式下不拦截这些按键。Alacritty 模板显式发送 CSI-u 编码，避免传统
+`Ctrl+数字` 编码歧义；Zellij 在所有非锁定模式下通过 `GoToTab` 处理。
+
+Windows 原生 Zellij 的实际配置路径以 `zellij setup --check` 为准。本机为
+`%APPDATA%\Zellij\config\config.kdl`，由 chezmoi 仅在 Windows 上部署。
+它与 `~/.config/zellij/config.kdl` 独立管理，保留 Windows 原生版本的设置。
+
+Windows PowerShell：
+
+```powershell
+chezmoi edit --apply "$env:APPDATA\Zellij\config\config.kdl"
+```
+
 ### OMP
 
 ```sh
