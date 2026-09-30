@@ -28,16 +28,17 @@ navigate_workspace_up = ["u", "up"]
 navigate_workspace_down = ["e", "down"]
 previous_workspace = "prefix+u"
 next_workspace = "prefix+e"
-workspace_picker = "prefix+space"
+workspace_picker = "ctrl+o"
+goto = ["ctrl+g", "prefix+g"]
 
 # Zellij's automatic NewPane becomes an explicit right split.
 split_vertical = ["alt+o", "prefix+r"]
 split_horizontal = "prefix+d"
 zoom = ["alt+f", "prefix+f"]
-close_pane = "prefix+w"
+close_pane = ["ctrl+w", "prefix+w"]
 rename_pane = "prefix+c"
 
-new_tab = "prefix+o"
+new_tab = "prefix+shift+o"
 previous_tab = ["ctrl+shift+tab", "prefix+,"]
 next_tab = ["ctrl+tab", "prefix+."]
 switch_tab = ["ctrl+1..9", "prefix+1..9"]
@@ -51,7 +52,7 @@ resize_pane_right = "ctrl+alt+i"
 
 # Move defaults that conflict with Colemak focus/swap or pane creation.
 edit_scrollback = "prefix+shift+v"
-new_workspace = "prefix+shift+o"
+new_workspace = "prefix+o"
 rename_workspace = "prefix+shift+c"
 open_notification_target = "prefix+shift+a"
 
@@ -65,7 +66,7 @@ tab_bar_position = "bottom"
 tab_bar_right = [
   { type = "text", text = "prefix ^T" },
   { type = "text", text = "^T ? help" },
-  { type = "text", text = "^T o tab" },
+  { type = "text", text = "^T O tab" },
   { type = "text", text = "^T q detach" },
 ]
 tab_bar_right_separator = "  "

@@ -103,7 +103,7 @@ tab_bar_position = "bottom"
 tab_bar_right = [
   { type = "text", text = "prefix ^T" },
   { type = "text", text = "^T ? help" },
-  { type = "text", text = "^T o tab" },
+  { type = "text", text = "^T O tab" },
   { type = "text", text = "^T q detach" },
 ]
 tab_bar_right_separator = "  "
@@ -119,10 +119,9 @@ tab_bar_right_separator = "  "
 标签行与提示属于客户端本地设置：`herdr server reload-config` 只重载服务端配置，
 已打开的客户端需在全局菜单选择 `reload config`，或分离后重新连接。
 
-验证：在默认会话上附加新客户端后，底部标签行右侧出现
-`prefix ^T  ^T ? help  ^T o tab  ^T q detach`；在临时命名会话中确认
-`prefix+o` 新建标签。关闭键现为 `prefix+w` 关闭当前窗格、`prefix+Shift+w` 关闭整个标签，
-已在独立多标签、多窗格会话中验证关闭范围，验证后删除测试会话。
+当前底部提示为 `prefix ^T  ^T ? help  ^T O tab  ^T q detach`，其中大写 `O` 表示
+`Shift+o`。本次快捷键配置经服务端热重载返回 `applied`，无配置诊断错误；
+尚未在客户端逐项实按验证。
 
 ```powershell
 chezmoi edit --apply "$env:APPDATA\herdr\config.toml"
@@ -134,7 +133,7 @@ herdr server reload-config
 应用新键位后，`Ctrl+t` 再按 `Shift+r` 可重载。
 
 `prefix` 表示先按 `Ctrl+t`，松开后再按下一键：
-例如新建标签：按住 Ctrl 按一下 t，松开 Ctrl 和 t，再按一下字母 o；不是一直按住 Ctrl。
+例如新建标签：按住 Ctrl 按一下 t，松开 Ctrl 和 t，再按 Shift+o；不是一直按住 Ctrl。
 字母以当前布局输出为准，使用 Colemak 中输出字母 o 的键。
 前缀后的字母须在英文输入状态下输入；中文输入法的拼音组合会截获字母，不能触发命令。
 
@@ -145,28 +144,29 @@ herdr server reload-config
 | 向右分屏 | `Alt+o`、`prefix+r` |
 | 向下分屏 | `prefix+d` |
 | 最大化 / 还原窗格 | `Alt+f`、`prefix+f` |
-| 关闭当前窗格 | `prefix+w`（已移除 `Alt+Shift+w` 和旧 `prefix+x`） |
+| 关闭当前窗格 | `Ctrl+w`、`prefix+w` |
 | 重命名窗格 | `prefix+c` |
-| 新建标签 | `prefix+o` |
+| 新建标签 | `prefix+Shift+o` |
 | 上 / 下一个标签 | `Ctrl+Shift+Tab` / `Ctrl+Tab`；或 `prefix+,` / `prefix+.` |
 | 第 1～9 个标签 | `Ctrl+1`～`Ctrl+9`；或 `prefix+1`～`prefix+9` |
 | 关闭整个标签及其中所有窗格 | `prefix+Shift+w`（已移除直接按 `Ctrl+Shift+w` 和旧 `prefix+Shift+x`） |
 | 调整窗格大小 | `Ctrl+n` 进入 Herdr resize 模式；`Ctrl+Alt+n/e/u/i` 直接按方向调整 |
-| 新建工作区 | `prefix+Shift+o` |
+| 新建工作区 | `prefix+o`；也可 `Ctrl+o` 进入工作区导航后按 `o` |
 | 重命名工作区 | `prefix+Shift+c`（从 `prefix+Shift+w` 移走，避免关闭标签冲突） |
 | 上 / 下一个工作区（Space） | `prefix+u` / `prefix+e` |
-| 打开工作区导航 | `prefix+Space`（空格），再按 `u/e` 或 `↑/↓` 选择，`Enter` 确认 |
+| 打开工作区导航 | `Ctrl+o`，再按 `u/e` 或 `↑/↓` 选择，`Enter` 确认 |
+| 打开 Agents / 终端列表 | `Ctrl+g`、`prefix+g`；用 `↑/↓` 或 `k/j` 选择，`Enter` 确认，不支持 `u/e` |
 | 编辑滚屏 / 跳转通知目标 | `prefix+Shift+v` / `prefix+Shift+a` |
 | 查看键位 / 分离客户端 | `prefix+?` / `prefix+q` |
 
 `Ctrl+t` 后的 `u/e` 切换 Space，不再用于窗格上下移动。前缀命令执行一次后退出，
-连续切换时每次重新按 `Ctrl+t`；也可通过 `prefix+Space`（空格）进入持续的 navigate 模式。
+连续切换时每次重新按 `Ctrl+t`；也可通过 `Ctrl+o` 进入持续的 navigate 模式。
 在 navigate 模式中，`u/e` 和 `↑/↓` 选择 Space，`Enter` 确认，`Esc` 取消；
 窗格左右移动使用 `n/i`，上下移动使用 `Alt+u/e`，避免与 Space 选择冲突。
 copy/resize 模式内部按键仍使用 Herdr 自身规则；`Ctrl+Alt+n/e/u/i` 提供普通模式下的
 Colemak 方向缩放。标签页切换仍为 `Ctrl+Tab` / `Ctrl+Shift+Tab`，与 Space 切换分开。
-`prefix+w` 只关闭当前 Pane，`prefix+Shift+w` 关闭整个 Tab；关闭最后一个 Pane 仍可能使
-所在 Tab 消失。工作区导航保持 `prefix+Space`，工作区重命名改为 `prefix+Shift+c`。
+`Ctrl+w` 或 `prefix+w` 只关闭当前 Pane，`prefix+Shift+w` 关闭整个 Tab；关闭最后一个 Pane
+仍可能使所在 Tab 消失。工作区导航使用 `Ctrl+o`，工作区重命名使用 `prefix+Shift+c`。
 Windows Terminal 仍保持 `Ctrl+Shift+w` 的外层关闭动作解绑；Herdr 不再将直接按下的
 `Ctrl+Shift+w` 用作关闭标签。注意先按并松开前缀，再按 `Shift+w`，不是三个键同时按。
 
