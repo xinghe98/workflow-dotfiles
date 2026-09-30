@@ -1,4 +1,4 @@
-# Alacritty 0.17 cross-platform configuration
+# Windows、macOS 与 Linux 共用的 Alacritty 配置，按平台选择启动程序与字体。
 
 [general]
 live_config_reload = true
@@ -12,7 +12,7 @@ COLORTERM = "truecolor"
 osc52 = "OnlyCopy"
 
 [terminal.shell]
-{{ if eq .chezmoi.os "windows" -}}
+{{ if or (eq .chezmoi.os "windows") (eq .chezmoi.os "darwin") -}}
 program = "herdr"
 args = []
 {{ else -}}

@@ -5,11 +5,11 @@
 | 平台 | 终端默认启动 | Alacritty 配置位置 | Kitty 配置位置 |
 |---|---|---|---|
 | Windows | Herdr（窗格为 Nushell） | `%APPDATA%\alacritty\alacritty.toml` | 不管理 |
-| macOS | zsh | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
+| macOS | Herdr（窗格为 zsh） | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
 | Linux | zsh | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
 
-应用前请确保 `nu` 或 `zsh` 已安装并位于 `PATH`；Windows 上 Alacritty 直接启动
-`herdr`，因此 `herdr` 也必须位于 `PATH`。
+Windows 需安装 Nushell，macOS / Linux 使用 zsh。Windows 与 macOS 的 Alacritty
+直接启动 `herdr`，因此这两个系统的 `herdr` 必须位于 `PATH`。
 
 ## 新机器配置
 
@@ -25,6 +25,17 @@ chezmoi -S ($nu.home-path | path join 'Documents' 'workflow-dotfiles') init --ap
 ```
 
 ### macOS / Linux（zsh）
+
+macOS 可先安装命令行依赖和终端：
+
+```zsh
+brew install chezmoi herdr neovim
+brew install --cask alacritty
+```
+
+Kitty 为可选终端；使用现有 Kitty 配置时，另行安装 `Maple Mono NF CN` 字体。
+不要复制 Windows 的 `chezmoi.toml`（其中包含 `C:\Users\...` 路径）；下面的初始化
+命令会从仓库模板生成本机路径。先恢复原有 age 私钥，再执行：
 
 ```zsh
 git clone https://github.com/xinghe98/workflow-dotfiles.git ~/Documents/workflow-dotfiles
@@ -56,12 +67,29 @@ chezmoi diff
 
 ## 修改配置
 
-推荐通过 `chezmoi edit --apply` 修改，退出 Neovim 后自动应用。
+Herdr、Alacritty、Zellij 在所有系统上各自只有一份公共源配置。系统目录中的文件
+由同一模板生成；平台差异只在公共源内条件化，不维护两份主题、键位或 UI 设置。
+
+| 应用 | 唯一公共源配置（相对仓库根目录） |
+|---|---|
+| Herdr | `.chezmoitemplates/herdr.toml` |
+| Alacritty | `.chezmoitemplates/alacritty.toml` |
+| Zellij | `.chezmoitemplates/zellij.kdl` |
+
+下面的公共源编辑命令在 Windows Nushell / PowerShell 与 macOS / Linux 上相同。
+`chezmoi cd` 会进入当前机器的源仓库，不依赖用户名或绝对路径。
+**不要用 `chezmoi edit` 编辑上述应用的生成文件**：它打开的是一行部署包装模板，
+不是公共配置正文。也不要对生成文件执行 `chezmoi add` / `re-add`，以免形成独立副本。
+直接在应用设置界面改动生成文件只影响本机；需要同步的改动必须写回对应公共源。
+
+其他没有公共包装模板的文件仍使用 `chezmoi edit --apply`，退出 Neovim 后自动应用。
 
 ### Zellij
 
 ```sh
-chezmoi edit --apply ~/.config/zellij/config.kdl
+chezmoi cd
+nvim .chezmoitemplates/zellij.kdl
+chezmoi apply
 ```
 
 Tab 快捷键：`Ctrl+1`～`Ctrl+9` 切换到第 1～9 个 tab，`Ctrl+0` 切换到第 10 个；
@@ -71,27 +99,29 @@ Tab 快捷键：`Ctrl+1`～`Ctrl+9` 切换到第 1～9 个 tab，`Ctrl+0` 切换
 要在 Alacritty 中进入 Zellij，手动执行 `zellij attach --create main`。
 
 关闭标签统一为 `Ctrl+t`，松开后按 `w`：进入 tab 模式后关闭当前标签并回到 normal。
-两份 Zellij 配置均移除 `Ctrl+Shift+w` 关闭标签和原 tab 模式的 `x` 关闭绑定；
+公共 Zellij 配置移除 `Ctrl+Shift+w` 关闭标签和原 tab 模式的 `x` 关闭绑定；
 窗格关闭保留 `Ctrl+p` 后按 `x`，移除容易误触的 `Alt+Shift+w`。
 
 Windows 原生 Zellij 的实际配置路径以 `zellij setup --check` 为准。本机为
 `%APPDATA%\Zellij\config\config.kdl`，由 chezmoi 仅在 Windows 上部署。
-它与 `~/.config/zellij/config.kdl` 独立管理，保留 Windows 原生版本的设置。
+它与 `~/.config/zellij/config.kdl` 都从 `.chezmoitemplates/zellij.kdl` 生成，
+现有平台差异在同一源文件内保留。两边修改都使用上面的公共源编辑命令。
 
-Windows PowerShell：
-
-```powershell
-chezmoi edit --apply "$env:APPDATA\Zellij\config\config.kdl"
-```
+保留的现有差异：Windows 使用 Nushell、Catppuccin Mocha、关闭增强键盘协议与启动提示，
+`Alt+=` 增大窗格；macOS / Linux 使用 zsh、默认主题、开启增强键盘协议，
+`Alt+=` 减小窗格。日后修改这些偏好也只编辑公共源内相应分支。
+Windows 同时存在的 `~/.config/zellij/config.kdl` 现在生成与原生 AppData 路径相同的
+Windows 配置；原生 Zellij 仍按 `setup --check` 给出的路径读取。
 
 ### Herdr
 
-目前仅部署 Windows 的 `%APPDATA%\herdr\config.toml`，参照 Windows 原生
-Zellij 配置：Catppuccin Mocha（Herdr 名称为 `catppuccin`）、`nu.exe`、
+Windows 部署到 `%APPDATA%\herdr\config.toml`，macOS / Linux 部署到
+`~/.config/herdr/config.toml`，均从 `.chezmoitemplates/herdr.toml` 生成。
+公共设置包括 Catppuccin Mocha（Herdr 名称为 `catppuccin`）、
 Colemak 方向键、底部标签栏与常驻快捷键提示、窗格边框、鼠标选中即复制。
 新标签直接创建，不弹出命名对话框；保留 Herdr 侧栏、声音和应用内通知。
 
-Windows 下 Alacritty 默认启动 Herdr（`program = "herdr"`，无参数），附加到已存在的
+Windows 与 macOS 下 Alacritty 默认启动 Herdr（`program = "herdr"`，无参数），附加到已存在的
 默认持久会话；会话未运行时自动创建。工作区、标签和窗格由后台服务持有，
 关闭终端或分离客户端不会结束其中的进程。
 
@@ -103,7 +133,7 @@ tab_bar_position = "bottom"
 tab_bar_right = [
   { type = "text", text = "prefix ^T" },
   { type = "text", text = "^T ? help" },
-  { type = "text", text = "^T O tab" },
+  { type = "text", text = "^T o tab" },
   { type = "text", text = "^T q detach" },
 ]
 tab_bar_right_separator = "  "
@@ -119,21 +149,24 @@ tab_bar_right_separator = "  "
 标签行与提示属于客户端本地设置：`herdr server reload-config` 只重载服务端配置，
 已打开的客户端需在全局菜单选择 `reload config`，或分离后重新连接。
 
-当前底部提示为 `prefix ^T  ^T ? help  ^T O tab  ^T q detach`，其中大写 `O` 表示
-`Shift+o`。本次快捷键配置经服务端热重载返回 `applied`，无配置诊断错误；
+当前底部提示为 `prefix ^T  ^T ? help  ^T o tab  ^T q detach`。
+本次快捷键配置经服务端热重载返回 `applied`，无配置诊断错误；
 尚未在客户端逐项实按验证。
 
-```powershell
-chezmoi edit --apply "$env:APPDATA\herdr\config.toml"
+```sh
+chezmoi cd
+nvim .chezmoitemplates/herdr.toml
+chezmoi apply
 herdr server reload-config
 ```
 
-服务端热重载不重启现有窗格；`nu.exe` 只影响新建窗格。已打开的客户端可通过
+服务端热重载不重启现有窗格；Windows 使用 `nu.exe`，macOS 使用 `/bin/zsh`，
+Linux 使用 `zsh`，仅影响新建窗格。已打开的客户端可通过
 全局菜单选择 `reload config`，同时重载客户端和服务端配置；也可分离后重新连接。
 应用新键位后，`Ctrl+t` 再按 `Shift+r` 可重载。
 
 `prefix` 表示先按 `Ctrl+t`，松开后再按下一键：
-例如新建标签：按住 Ctrl 按一下 t，松开 Ctrl 和 t，再按 Shift+o；不是一直按住 Ctrl。
+例如新建标签：按住 Ctrl 按一下 t，松开 Ctrl 和 t，再按一下字母 o；不是一直按住 Ctrl。
 字母以当前布局输出为准，使用 Colemak 中输出字母 o 的键。
 前缀后的字母须在英文输入状态下输入；中文输入法的拼音组合会截获字母，不能触发命令。
 
@@ -146,12 +179,12 @@ herdr server reload-config
 | 最大化 / 还原窗格 | `Alt+f`、`prefix+f` |
 | 关闭当前窗格 | `Ctrl+w`、`prefix+w` |
 | 重命名窗格 | `prefix+c` |
-| 新建标签 | `prefix+Shift+o` |
+| 新建标签 | `prefix+o` |
 | 上 / 下一个标签 | `Ctrl+Shift+Tab` / `Ctrl+Tab`；或 `prefix+,` / `prefix+.` |
 | 第 1～9 个标签 | `Ctrl+1`～`Ctrl+9`；或 `prefix+1`～`prefix+9` |
 | 关闭整个标签及其中所有窗格 | `prefix+Shift+w`（已移除直接按 `Ctrl+Shift+w` 和旧 `prefix+Shift+x`） |
 | 调整窗格大小 | `Ctrl+n` 进入 Herdr resize 模式；`Ctrl+Alt+n/e/u/i` 直接按方向调整 |
-| 新建工作区 | `prefix+o`；也可 `Ctrl+o` 进入工作区导航后按 `o` |
+| 新建工作区 | `prefix+Shift+o`；也可 `Ctrl+o` 进入工作区导航后按 `Shift+o` |
 | 重命名工作区 | `prefix+Shift+c`（从 `prefix+Shift+w` 移走，避免关闭标签冲突） |
 | 上 / 下一个工作区（Space） | `prefix+u` / `prefix+e` |
 | 打开工作区导航 | `Ctrl+o`，再按 `u/e` 或 `↑/↓` 选择，`Enter` 确认 |
@@ -184,14 +217,23 @@ Windows Terminal 仍保持 `Ctrl+Shift+w` 的外层关闭动作解绑；Herdr �
   其他终端可使用上述 prefix 备选。两个终端都不再保留 Zellij 的
   `Ctrl+t` 多模式序列。
 
-从 Herdr 设置界面修改后，只更新配置文件：
-
-```powershell
-chezmoi re-add "$env:APPDATA\herdr\config.toml"
-```
+从 Herdr 设置界面修改后，将需要同步的字段手工写回 `.chezmoitemplates/herdr.toml`，
+再执行 `chezmoi apply`；不要重新纳管生成文件，否则会破坏单一公共源。
 
 不纳入会话、日志、socket、插件锁、安装包或 agent-detection 缓存。
-macOS / Linux 不部署此 Windows 配置；原有 Agent 集成文件不在本次纳管范围。
+Agent 集成属于本机安装产物，不同步 Windows 的 `.ps1` 与 `C:\Users\...` 钩子。
+macOS 安装好相应 Agent CLI 后，按需生成本机集成，例如：
+
+```sh
+herdr integration install omp
+herdr integration install claude
+herdr integration install codex
+herdr integration install cursor
+herdr integration install opencode
+herdr integration status
+```
+
+安装集成不等于迁移 Agent 登录凭据；新机器仍需登录自己的账户。
 配置契约参见 [Herdr 配置文档](https://herdr.dev/docs/configuration/)。
 
 ### Windows Terminal
@@ -231,8 +273,9 @@ chezmoi edit --apply ~/.omp/agent/keybindings.yml
 
 ### Alacritty
 
-Windows 默认启动 Herdr 并附加到默认持久会话，窗格内为 Nushell；macOS / Linux
-默认启动 zsh。首次启动前确认 `herdr` 位于 `PATH`，否则窗口会立即退出。
+Windows 与 macOS 默认启动 Herdr 并附加到默认持久会话，窗格内分别为 Nushell 与 zsh；
+Linux 保留直接启动 zsh。首次启动前确认 `herdr` 位于 `PATH`，否则窗口会立即退出。
+macOS 保留 `option_as_alt = "Both"`；Kitty 将左 Option 作为 Alt。
 
 验证：以独立 Alacritty 窗口启动后，进程树中出现 `conhost.exe` 与命令行仅为
 `herdr` 的 `herdr.exe`，`herdr status client` 确认客户端已附加，且默认会话的
@@ -240,17 +283,16 @@ Windows 默认启动 Herdr 并附加到默认持久会话，窗格内为 Nushell
 `Ctrl+Tab`、`Ctrl+Shift+Tab` 和 `Ctrl+1`～`Ctrl+9` 的 CSI-u 序列在临时命名
 会话中逐一触发标签切换，验证后已停止并删除该会话。
 
-Windows Nushell：
+所有平台编辑同一公共源：
 
-```nu
-chezmoi edit --apply ($env.APPDATA | path join 'alacritty' 'alacritty.toml')
+```sh
+chezmoi cd
+nvim .chezmoitemplates/alacritty.toml
+chezmoi apply
 ```
 
-macOS / Linux：
-
-```zsh
-chezmoi edit --apply ~/.config/alacritty/alacritty.toml
-```
+不编辑 `AppData/Roaming/alacritty/alacritty.toml.tmpl` 或
+`dot_config/alacritty/alacritty.toml.tmpl`；它们只负责引用公共源。
 
 ### Kitty
 
@@ -317,6 +359,10 @@ chezmoi re-add "$env:USERPROFILE\.cc-switch\skills\impeccable"
 `chezmoi add --encrypt ~/.config/opencode/opencode.json`。
 
 ## 更新并同步
+同一应用在每台机器编辑的是同一个仓库相对路径；生成文件的系统路径可以不同。
+Git 不提供实时双向同步：改动前先拉取，改动后提交推送，再在另一台机器拉取应用。
+不要在两台机器同时离线修改后直接覆盖；出现 Git 冲突时先合并公共源再应用。
+
 
 修改后检查、提交并推送：
 
@@ -337,3 +383,19 @@ chezmoi update
 
 不要把 OMP 的数据库、会话、缓存、`secrets.yml`、OpenCode / Zeron 的登录凭据
 或 age 私钥加入 Git。OpenCode 主配置仅以 `encrypted_*.age` 密文进入仓库。
+
+## 跨平台适配验证（2026-09-30）
+
+- Windows、macOS、Linux 分支均经 chezmoi 展开；Herdr 与 Alacritty 的生成 TOML 可解析，
+  两套部署入口分别引用同一个公共源。临时源仓库的一次 Herdr 前缀修改同时进入三平台结果。
+- Windows 的 Herdr 与 Alacritty 所有有效配置值与迁移前一致；Zellij 保留各平台已有有效设置，
+  仅统一插件声明顺序、等价字符串写法与说明性注释。三平台生成 KDL 均由本机 Zellij 0.44.3
+  `setup --check` 接受，此项证明语法，不证明 macOS 运行时。
+- 平台选路与运行时污染沙箱验证：每个平台仅管理其对应 Herdr 配置，不纳入会话、恢复备份、
+  快照、日志、socket、锁或版本提示文件。
+- 已在 Windows 应用 Herdr、Alacritty、Zellij 生成文件并通过针对性 `chezmoi verify`；
+  Herdr 服务端重载返回 `applied`、诊断为空。实际启动独立 Alacritty 窗口后出现 Herdr 客户端，
+  原工作区、标签与窗格 ID 保持不变；验证窗口已关闭，原服务端未重启。
+- 未在 Mac 真机启动终端或逐项实按快捷键。`joinPath` 等路径操作在 Windows 模拟中仍遵循宿主
+  系统规则，因此本次平台分支验证不替代 Mac 原生初始化；Mac 还需验证 Homebrew PATH、
+  Option/Control 组合键、字体及本机 Agent 状态回报。

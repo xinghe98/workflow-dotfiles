@@ -2,6 +2,7 @@ README.md
 
 {{- if eq .chezmoi.os "windows" }}
 .config/alacritty
+.config/herdr
 .config/kitty
 {{- else }}
 AppData/Roaming/alacritty
@@ -49,11 +50,29 @@ AppData/Local/Zeron/local-profile.json
 AppData/Local/Zeron/session.json
 
 # Herdr: only config.toml is managed; runtime and installed packages stay local.
+# macOS/Linux 的运行时文件同样保留在本机，不纳入同步。
 .herdr
 AppData/Local/herdr
 AppData/Roaming/herdr/session*.json
 AppData/Roaming/herdr/sessions
+AppData/Roaming/herdr/session-snapshots
+AppData/Roaming/herdr/session-backups
+AppData/Roaming/herdr/release-notes.json
+AppData/Roaming/herdr/logs
+AppData/Roaming/herdr/locks
 AppData/Roaming/herdr/*.log
 AppData/Roaming/herdr/*.sock
 AppData/Roaming/herdr/*.lock
 AppData/Roaming/herdr/.plugins.lock
+.config/herdr/session*.json
+.config/herdr/sessions
+.config/herdr/session-snapshots
+.config/herdr/session-backups
+.config/herdr/release-notes.json
+.config/herdr/logs
+.config/herdr/*.log
+.config/herdr/sock
+.config/herdr/*.sock
+.config/herdr/locks
+.config/herdr/*.lock
+.config/herdr/.plugins.lock
