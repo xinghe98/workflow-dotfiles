@@ -32,13 +32,17 @@ red = "#e67e80"
 mauve = "#d699b6"
 [terminal]
 {{- if eq .chezmoi.os "windows" }}
-default_shell = "nu.exe"
+default_shell = "wsl.exe"
 {{- else if eq .chezmoi.os "darwin" }}
 default_shell = "/bin/zsh"
 {{- else }}
 default_shell = "zsh"
 {{- end }}
+{{- if eq .chezmoi.os "windows" }}
+new_cwd = {{ printf "%s/Documents" .chezmoi.homeDir | quote }}
+{{- else }}
 new_cwd = "follow"
+{{- end }}
 
 # Herdr has one prefix, not Zellij's separate pane/tab/move modes.
 [keys]

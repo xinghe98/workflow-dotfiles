@@ -1,4 +1,4 @@
-sourceDir = {{ joinPath .chezmoi.homeDir "Documents/workflow-dotfiles" | quote }}
+sourceDir = {{ .chezmoi.sourceDir | quote }}
 encryption = "age"
 
 [age]

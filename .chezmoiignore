@@ -4,12 +4,9 @@ README.md
 .config/alacritty
 .config/herdr
 .config/kitty
+.config/zsh
 {{- else }}
-AppData/Roaming/alacritty
-AppData/Roaming/Zellij
-AppData/Local/Zeron
-AppData/Roaming/herdr
-AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
+AppData
 {{- end }}
 
 .omp/agent/*.db
@@ -33,6 +30,7 @@ AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe
 .config/opencode/node_modules
 .config/opencode/*.bak*
 .config/opencode/auth.json
+.config/opencode/service.json
 .local/share/opencode
 .local/state/opencode
 .cache/opencode

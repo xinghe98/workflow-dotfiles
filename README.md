@@ -4,12 +4,15 @@
 
 | 平台 | 终端默认启动 | Alacritty 配置位置 | Kitty 配置位置 |
 |---|---|---|---|
-| Windows | Herdr（窗格为 Nushell） | `%APPDATA%\alacritty\alacritty.toml` | 不管理 |
+| Windows | Herdr（窗格为 WSL 默认发行版） | `%APPDATA%\alacritty\alacritty.toml` | 不管理 |
 | macOS | Herdr（窗格为 zsh） | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
 | Linux | zsh | `~/.config/alacritty/alacritty.toml` | `~/.config/kitty/kitty.conf` |
 
-Windows 需安装 Nushell，macOS / Linux 使用 zsh。Windows 与 macOS 的 Alacritty
+Windows 需安装 WSL 并设置默认发行版，macOS / Linux 使用 zsh。Windows 与 macOS 的 Alacritty
 直接启动 `herdr`，因此这两个系统的 `herdr` 必须位于 `PATH`。
+Windows 的 Alacritty 启动目录和 Herdr 新窗格默认目录均为用户的 `Documents`；
+`wsl.exe` 将该 Windows 路径映射为 `/mnt/c/Users/<用户名>/Documents/`。
+macOS 保持原有主目录与 Herdr 的 `follow` 目录策略。
 
 ## 新机器配置
 
@@ -43,6 +46,60 @@ chezmoi -S ~/Documents/workflow-dotfiles init --apply
 ```
 
 如果目标位置已有同名配置，chezmoi 会显示冲突并询问是否覆盖；确认前先保留需要的本机内容。
+
+### WSL：共用 Windows 源仓库
+
+WSL 使用原生 chezmoi，并直接读取 Windows 上的同一份源仓库，不再维护第二个 Git 副本。
+初始化模板保留 `-S` 指定的源目录；Windows 和 WSL 各自保存 chezmoi 状态及生成配置。
+以下为本机 Arch WSL 的路径，其他机器需替换 Windows 用户名：
+
+```zsh
+sudo pacman -S --needed chezmoi
+install -d -m 700 ~/.config/chezmoi
+install -m 600 /mnt/c/Users/mysta/.config/chezmoi/age-key.txt ~/.config/chezmoi/age-key.txt
+chezmoi -S /mnt/c/Users/mysta/Documents/workflow-dotfiles init
+chezmoi apply
+chezmoi verify
+```
+
+私钥只在本机复制，仍不进入仓库。应用前备份已有配置；不要直接复制 Windows 的
+chezmoi 配置文件，也不要将 WSL 的整个 `.omp/agent` 指向 Windows。
+
+WSL 部署 OpenCode、OMP、Herdr、Zellij、Alacritty、Kitty 和共用技能；
+`AppData` 下的 Windows 专用配置全部跳过。OMP 的 Linux 模板直接生成
+`shellPath: /usr/bin/zsh`，不再需要 `omp` 包装函数、`PI_CONFIG_FILES` 或单独的 WSL 覆盖文件。
+OMP 的规则、键位和仓库内扩展也一并部署；登录数据库、会话、用量统计和缓存仍各自独立。
+源目录 `dot_omp/private_agent` 保持 Linux 的 `~/.omp/agent` 权限为 `0700`，
+与 OMP 自身的权限要求一致，避免每次启动后出现 chezmoi 权限差异。
+WSL 没有本地凭据时，OMP 会提示没有可用模型，需要在 WSL 内执行 `/login`。
+OpenCode 主配置中原有的 API Key 随 age 加密配置恢复，但本地登录凭据与 `service.json` 不同步。
+
+用户级 Herdr 安装在 `~/.local/bin` 时，在实际加载的 zsh 配置中添加一次：
+
+```zsh
+source "$HOME/.config/zsh/.zsh/workflow.zsh"
+```
+
+该片段由 chezmoi 管理，不覆盖原有 zsh 配置：补充 `~/.local/bin`，并仅在 WSL 中
+过滤 `/mnt/<盘符>/...` 的 PATH 项，保留 Windows `System32`。这样高亮插件不再
+逐字扫描大量 Windows 应用目录，同时仍可直接调用 `cmd.exe`、`wsl.exe`；
+其他被移出 PATH 的 Windows 程序需使用完整路径。Linux 原生 PATH 项保持原顺序，
+非 WSL 环境不做过滤。语法高亮、自动建议与补全均保留。
+本机入口为 `~/.config/zsh/.zshrc`（`~/.zshenv` 设置了 `ZDOTDIR`）。
+应用后新开终端，或执行上面的 `source` 命令让当前 zsh 生效。
+应用配置不会安装 Alacritty、Kitty 或 Zellij；需要使用时另行安装对应 Linux 程序。
+
+OpenCode 依赖按仓库的 npm 锁文件安装：在 `~/.config/opencode` 下执行
+`npm ci --ignore-scripts --no-audit --no-fund`。若旧 `opencode.jsonc` 仅含 schema，
+备份后移除，避免后续设置写入这个优先级更高的旧文件；包含实际设置时应先合并。
+Herdr 的本机集成使用 `herdr integration install omp` 和
+`herdr integration install opencode` 安装，不复制 Windows 运行时文件。
+OpenCode V2 首次启动完成后再执行一次集成安装，并用 `herdr integration status`
+确认 OMP 与 OpenCode 均为 `current`。
+
+**共用源仓库不是实时同步生成文件。** 修改公共源后，Windows 与 WSL 分别运行
+`chezmoi apply`；不要同时在两端修改同一个源文件。Windows Herdr 与 WSL 原生 Herdr
+也仍是两个独立运行时，此处不建立跨系统会话或 socket 桥接。
 
 ## 使用配置
 
@@ -160,8 +217,9 @@ chezmoi apply
 herdr server reload-config
 ```
 
-服务端热重载不重启现有窗格；Windows 使用 `nu.exe`，macOS 使用 `/bin/zsh`，
-Linux 使用 `zsh`，仅影响新建窗格。已打开的客户端可通过
+服务端热重载不重启现有窗格；Windows 使用 `wsl.exe` 进入 WSL 默认发行版，macOS 使用 `/bin/zsh`，
+Linux 使用 `zsh`，仅影响新建窗格。Windows 新窗格默认从 `Documents` 启动，不再跟随当前窗格目录。
+重新打开 Alacritty 仍可能附加到原有 Nushell 窗格；新建标签即可使用 WSL，无需停止现有会话。已打开的客户端可通过
 全局菜单选择 `reload config`，同时重载客户端和服务端配置；也可分离后重新连接。
 应用新键位后，`Ctrl+t` 再按 `Shift+r` 可重载。
 
