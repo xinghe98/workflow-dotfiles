@@ -64,13 +64,15 @@ navigate_workspace_down = ["e", "down"]
 previous_workspace = "prefix+u"
 next_workspace = "prefix+e"
 workspace_picker = "ctrl+o"
-goto = ["ctrl+g", "prefix+g"]
+# Goto 弹窗内部方向键为 herdr 内置（↑↓/j/k 行、←→ 工作区分组），无配置项可改成 u/e/n/i；
+# 因此只保留前缀入口，直接键位 ctrl+f 归还窗格内程序（readline 前进一字符）。
+goto = "prefix+g"
 
 # Zellij's automatic NewPane becomes an explicit right split.
 split_vertical = ["alt+o", "prefix+r"]
 split_horizontal = "prefix+d"
 zoom = ["alt+f", "prefix+f"]
-close_pane = ["ctrl+w", "prefix+w"]
+close_pane = ["ctrl+q", "prefix+w"]
 rename_pane = "prefix+c"
 
 new_tab = "prefix+o"

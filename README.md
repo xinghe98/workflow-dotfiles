@@ -235,7 +235,7 @@ Linux 使用 `zsh`，仅影响新建窗格。Windows 新窗格默认从 `Documen
 | 向右分屏 | `Alt+o`、`prefix+r` |
 | 向下分屏 | `prefix+d` |
 | 最大化 / 还原窗格 | `Alt+f`、`prefix+f` |
-| 关闭当前窗格 | `Ctrl+w`、`prefix+w` |
+| 关闭当前窗格 | `Ctrl+q`、`prefix+w` |
 | 重命名窗格 | `prefix+c` |
 | 新建标签 | `prefix+o` |
 | 上 / 下一个标签 | `Ctrl+Shift+Tab` / `Ctrl+Tab`；或 `prefix+,` / `prefix+.` |
@@ -246,9 +246,16 @@ Linux 使用 `zsh`，仅影响新建窗格。Windows 新窗格默认从 `Documen
 | 重命名工作区 | `prefix+Shift+c`（从 `prefix+Shift+w` 移走，避免关闭标签冲突） |
 | 上 / 下一个工作区（Space） | `prefix+u` / `prefix+e` |
 | 打开工作区导航 | `Ctrl+o`，再按 `u/e` 或 `↑/↓` 选择，`Enter` 确认 |
-| 打开 Agents / 终端列表 | `Ctrl+g`、`prefix+g`；用 `↑/↓` 或 `k/j` 选择，`Enter` 确认，不支持 `u/e` |
+| 打开 Agents / 终端列表 | `prefix+g`（直接键位 `Ctrl+f`、`Ctrl+g` 均已释放）；用 `↑/↓` 或 `k/j` 选择，`←/→` 切换工作区分组，`Enter` 确认 |
 | 编辑滚屏 / 跳转通知目标 | `prefix+Shift+v` / `prefix+Shift+a` |
 | 查看键位 / 分离客户端 | `prefix+?` / `prefix+q` |
+
+Goto 弹窗保留前缀入口 `prefix+g`；直接键位 `Ctrl+f` 与 `Ctrl+g` 都已释放，`Ctrl+f` 回到
+窗格内程序（shell / 编辑器前进一字符）。Herdr 0.9.3 的 Goto 弹窗内部按键硬编码在客户端：
+`↑/↓` 与 `j/k` 移动行、`←/→` 切换工作区分组、`i` 是 idle 筛选，没有配置项可以改成
+`u/e/n/i`；`navigate_*` 系列只作用于 `Ctrl+o` 的工作区导航。已在独立会话实按验证
+`prefix+g` 仍打开 Goto、`Ctrl+f` 不再打开且以 `^F` 送入窗格、`i` 仍是 idle 筛选。
+已打开的客户端需执行 `prefix+Shift+r` 重载本地键位，服务端 CLI 热重载不能代替此步骤。
 
 `Ctrl+t` 后的 `u/e` 切换 Space，不再用于窗格上下移动。前缀命令执行一次后退出，
 连续切换时每次重新按 `Ctrl+t`；也可通过 `Ctrl+o` 进入持续的 navigate 模式。
@@ -256,10 +263,14 @@ Linux 使用 `zsh`，仅影响新建窗格。Windows 新窗格默认从 `Documen
 窗格左右移动使用 `n/i`，上下移动使用 `Alt+u/e`，避免与 Space 选择冲突。
 copy/resize 模式内部按键仍使用 Herdr 自身规则；`Ctrl+Alt+n/e/u/i` 提供普通模式下的
 Colemak 方向缩放。标签页切换仍为 `Ctrl+Tab` / `Ctrl+Shift+Tab`，与 Space 切换分开。
-`Ctrl+w` 或 `prefix+w` 只关闭当前 Pane，`prefix+Shift+w` 关闭整个 Tab；关闭最后一个 Pane
+`Ctrl+q` 或 `prefix+w` 只关闭当前 Pane，`prefix+Shift+w` 关闭整个 Tab；关闭最后一个 Pane
 仍可能使所在 Tab 消失。工作区导航使用 `Ctrl+o`，工作区重命名使用 `prefix+Shift+c`。
 Windows Terminal 仍保持 `Ctrl+Shift+w` 的外层关闭动作解绑；Herdr 不再将直接按下的
 `Ctrl+Shift+w` 用作关闭标签。注意先按并松开前缀，再按 `Shift+w`，不是三个键同时按。
+
+关闭窗格的直接键从 `Ctrl+w` 换成 `Ctrl+q`，`Ctrl+w` 归还窗格内程序（shell / 编辑器删除前一个单词）；
+`prefix+w` 与 `prefix+Shift+w` 不变。已在独立会话实按验证 `Ctrl+q` 关闭窗格、`Ctrl+w` 不再关闭、
+`prefix+w` 仍关闭；同样需要 `prefix+Shift+r` 重载客户端本地键位后才在本会话生效。
 
 与 Zellij 的区别：
 
