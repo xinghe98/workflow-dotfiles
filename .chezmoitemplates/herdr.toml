@@ -92,6 +92,8 @@ rename_workspace = "prefix+shift+c"
 open_notification_target = "prefix+shift+a"
 
 [ui]
+# 使用原生光标，让 Windows / WSL 中文输入法候选框跟随输入位置。
+host_cursor = "native"
 status_indicators = "symbols"
 pane_borders = "always"
 show_agent_labels_on_pane_borders = true
