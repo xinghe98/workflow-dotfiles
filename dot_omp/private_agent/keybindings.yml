@@ -32,9 +32,15 @@ tui.input.submit:
 # Shift+Enter / Ctrl+J stay as newline.
 app.message.followUp: Enter
 
-# Thinking level cycle (was Shift+Tab; Ctrl+T was visibility toggle).
-app.thinking.cycle: Ctrl+T
+# Thinking level cycle: Ctrl+L primary (matches the Windows-side binding),
+# Ctrl+T kept as a fallback chord (Ctrl+T is the default visibility toggle).
+app.thinking.cycle:
+  - Ctrl+L
+  - Ctrl+T
 app.thinking.toggle: []
+# Release the built-in live voice chord (default Ctrl+L) so it cannot race the
+# cycle binding; live mode stays reachable via /live or a rebind such as Ctrl+Shift+L.
+app.live.toggle: []
 # Normal input: Tab toggles write <-> plan mode.
 app.plan.toggle:
   - Tab
