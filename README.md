@@ -340,6 +340,23 @@ chezmoi edit --apply ~/.omp/agent/config.yml
 chezmoi edit --apply ~/.omp/agent/keybindings.yml
 ```
 
+Herdr skill 由 `dot_omp/private_agent/skills/herdr/SKILL.md` 管理，部署到
+`~/.omp/agent/skills/herdr/SKILL.md`。OMP 默认在启动时自动发现该技能，
+无需传入 `--append-system-prompt`；模型在任务涉及 Herdr 时按需读取技能正文。
+在 Herdr pane 中可直接用自然语言要求分屏、启动其他 agent、发送任务及读取回复。
+实际控制要求当前进程继承 `HERDR_ENV=1` 和对应 pane 的 Herdr 环境变量。
+
+技能内容是安装时 `herdr --skill` 输出的快照。更新 Herdr 后如需同步技能，
+在 macOS / Linux 重新生成并更新 chezmoi 源：
+
+```sh
+herdr --skill > ~/.omp/agent/skills/herdr/SKILL.md
+chezmoi re-add ~/.omp/agent/skills/herdr/SKILL.md
+```
+
+新机器运行 `chezmoi apply` 后，正常启动 OMP 即可发现该技能；
+Herdr 和所需 agent CLI 仍需在本机安装，状态集成按前面的 Herdr 说明单独安装。
+
 ### Alacritty
 
 Windows 与 macOS 默认启动 Herdr 并附加到默认持久会话，窗格内分别为 Nushell 与 zsh；
