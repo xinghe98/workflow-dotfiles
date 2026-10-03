@@ -344,6 +344,9 @@ chezmoi edit --apply ~/.omp/agent/keybindings.yml
 ```
 
 思考强度只用 `Ctrl+L` 切换；OMP 不再绑定 `Ctrl+T`，该键留给 Herdr 前缀。
+普通输入中，`Enter` 提交消息；agent 正在工作时走 steering（引导式）。
+Herdr 的 `agent prompt` 发送文本后按 Enter，因此 agent 协作消息也走 steering。
+`Ctrl+Enter` 保留为 afterYield（当前轮结束后处理）；`Shift+Enter` / `Ctrl+J` 换行。
 修改 `keybindings.yml` 后重新打开 OMP，使新键位生效。
 
 Herdr skill 由 `dot_omp/private_agent/skills/herdr/SKILL.md` 管理，部署到
