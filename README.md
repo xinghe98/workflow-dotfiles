@@ -223,6 +223,9 @@ Linux 使用 `zsh`，仅影响新建窗格。Windows 新窗格默认从 `Documen
 全局菜单选择 `reload config`，同时重载客户端和服务端配置；也可分离后重新连接。
 应用新键位后，`Ctrl+t` 再按 `Shift+r` 可重载。
 
+新建标签会先显示命名框，预填该标签原本的数字编号（如 `2`、`3`）；
+回车接受默认名称，`Ctrl+c` 清空后可输入自定义名称，`Esc` 取消且不创建标签。
+
 `prefix` 表示先按 `Ctrl+t`，松开后再按下一键：
 例如新建标签：按住 Ctrl 按一下 t，松开 Ctrl 和 t，再按一下字母 o；不是一直按住 Ctrl。
 字母以当前布局输出为准，使用 Colemak 中输出字母 o 的键。
@@ -339,6 +342,9 @@ Windows Terminal 的快捷键是全局设置，所有配置档都会发送上述
 chezmoi edit --apply ~/.omp/agent/config.yml
 chezmoi edit --apply ~/.omp/agent/keybindings.yml
 ```
+
+思考强度只用 `Ctrl+L` 切换；OMP 不再绑定 `Ctrl+T`，该键留给 Herdr 前缀。
+修改 `keybindings.yml` 后重新打开 OMP，使新键位生效。
 
 Herdr skill 由 `dot_omp/private_agent/skills/herdr/SKILL.md` 管理，部署到
 `~/.omp/agent/skills/herdr/SKILL.md`。OMP 默认在启动时自动发现该技能，

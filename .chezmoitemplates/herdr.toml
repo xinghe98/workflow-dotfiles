@@ -119,7 +119,8 @@ tab_bar_right = [
 tab_bar_right_separator = " · "
 
 hide_tab_bar_when_single_tab = false
-prompt_new_tab_name = false
+# 新建标签前显示命名框。
+prompt_new_tab_name = true
 mouse_capture = true
 copy_on_select = true
 sidebar_width = 30

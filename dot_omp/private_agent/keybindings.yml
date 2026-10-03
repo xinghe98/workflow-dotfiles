@@ -32,11 +32,8 @@ tui.input.submit:
 # Shift+Enter / Ctrl+J stay as newline.
 app.message.followUp: Enter
 
-# Thinking level cycle: Ctrl+L primary (matches the Windows-side binding),
-# Ctrl+T kept as a fallback chord (Ctrl+T is the default visibility toggle).
-app.thinking.cycle:
-  - Ctrl+L
-  - Ctrl+T
+# 思考强度仅由 Ctrl+L 切换，Ctrl+T 留给终端前缀。
+app.thinking.cycle: Ctrl+L
 app.thinking.toggle: []
 # Release the built-in live voice chord (default Ctrl+L) so it cannot race the
 # cycle binding; live mode stays reachable via /live or a rebind such as Ctrl+Shift+L.
