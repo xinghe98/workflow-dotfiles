@@ -158,9 +158,15 @@ bindings = [
   { key = "8", mods = "Control", chars = "\u001b[56;5u" },
   { key = "9", mods = "Control", chars = "\u001b[57;5u" },
   { key = "0", mods = "Control", chars = "\u001b[48;5u" },
-  { key = "ArrowUp", mods = "Control|Alt", action = "IncreaseFontSize" },
-  { key = "ArrowDown", mods = "Control|Alt", action = "DecreaseFontSize" },
-  { key = "R", mods = "Control|Alt", action = "ResetFontSize" },
+  # 字号不再占用 Alt 组合：Alt+↑ / Alt+↓（含右 Alt）必须原样交给应用，
+  # 否则会和 omp 的「取回排队消息」(Alt+↑) 抢键。
+  { key = "ArrowUp", mods = "Control|Shift", action = "IncreaseFontSize" },
+  { key = "ArrowDown", mods = "Control|Shift", action = "DecreaseFontSize" },
+  { key = "R", mods = "Control|Shift", action = "ResetFontSize" },
+  # 右 Alt 在 Windows 上按 Ctrl+Alt 上报（AltGr）。这一路不留给 Alacritty，
+  # 直接还原成 Alt+↑ / Alt+↓ 的终端序列转发给应用。
+  { key = "ArrowUp", mods = "Control|Alt", chars = "\u001b[1;3A" },
+  { key = "ArrowDown", mods = "Control|Alt", chars = "\u001b[1;3B" },
   { key = "Return", mods = "Control", chars = "\u001b[13;5u" },
   { key = "NumpadEnter", mods = "Control", chars = "\u001b[13;5u" },
 ]
