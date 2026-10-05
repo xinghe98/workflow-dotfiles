@@ -32,7 +32,7 @@ red = "#e67e80"
 mauve = "#d699b6"
 [terminal]
 {{- if eq .chezmoi.os "windows" }}
-default_shell = "wsl.exe"
+default_shell = "nu.exe"
 {{- else if eq .chezmoi.os "darwin" }}
 default_shell = "/bin/zsh"
 {{- else }}
