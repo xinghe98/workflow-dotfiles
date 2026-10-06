@@ -3,6 +3,10 @@ repaint_delay                   6
 input_delay                     1
 sync_to_monitor                 no
 
+# External editors (OpenCode editor_open via ctrl+g, git, etc.): Colemak nvim.
+env EDITOR=nvim
+env VISUAL=nvim
+
 # Font settings
 font_size                       20.0
 disable_ligatures               cursor
@@ -134,7 +138,9 @@ map alt+enter   new_window_with_cwd
 # map alt+v toggle_layout tall
 # map alt+s toggle_layout grid
 #
-# Zellij uses Alt+n/e/u/i for pane focus (Colemak). Do not bind them here.
+# Herdr uses Alt+n/e/u/i for pane focus and Alt+Shift+n/e/u/i for pane swap
+# (Colemak directions). Do not bind or remap them here: Herdr speaks Kitty's
+# keyboard protocol, so identity forwarders would only shadow real key events.
 # map alt+n neighboring_window left
 # map alt+e neighboring_window bottom
 # map alt+u neighboring_window top
@@ -145,14 +151,6 @@ map alt+] next_tab
 # Encode Ctrl+Tab explicitly: legacy terminal input aliases it to Tab.
 map ctrl+tab send_text all \x1b[9;5u
 map ctrl+shift+tab send_text all \x1b[9;6u
-map alt+n send_key alt+n
-map alt+e send_key alt+e
-map alt+u send_key alt+u
-map alt+i send_key alt+i
-map alt+shift+n send_key alt+shift+n
-map alt+shift+e send_key alt+shift+e
-map alt+shift+u send_key alt+shift+u
-map alt+shift+i send_key alt+shift+i
 
 #
 # map alt+shift+h move_window left

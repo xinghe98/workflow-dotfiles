@@ -31,6 +31,10 @@ AppData
 .config/opencode/*.bak*
 .config/opencode/auth.json
 .config/opencode/service.json
+# Herdr 本机安装器生成；每台机器执行 integration install opencode。
+.config/opencode/plugins/herdr-agent-state.js
+.config/opencode/herdr-tui-session.js
+.config/opencode/tui.jsonc
 .local/share/opencode
 .local/state/opencode
 .cache/opencode
@@ -47,7 +51,7 @@ AppData/Local/Zeron/engine.lock*
 AppData/Local/Zeron/local-profile.json
 AppData/Local/Zeron/session.json
 
-# Herdr: only config.toml is managed; runtime and installed packages stay local.
+# Herdr: config.toml and read-session.py are managed; runtime and installed packages stay local.
 # macOS/Linux 的运行时文件同样保留在本机，不纳入同步。
 .herdr
 AppData/Local/herdr

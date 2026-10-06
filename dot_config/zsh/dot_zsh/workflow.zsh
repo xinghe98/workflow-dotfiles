@@ -19,3 +19,7 @@ fi
 if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
+
+# External editors (OpenCode editor_open via ctrl+g, git, etc.): Colemak nvim.
+export EDITOR=nvim
+export VISUAL=nvim

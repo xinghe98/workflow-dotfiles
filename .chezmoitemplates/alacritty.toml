@@ -11,6 +11,8 @@ working_directory = {{ .chezmoi.homeDir | quote }}
 [env]
 TERM = "xterm-256color"
 COLORTERM = "truecolor"
+EDITOR = "nvim"
+VISUAL = "nvim"
 
 [terminal]
 osc52 = "OnlyCopy"
@@ -167,6 +169,14 @@ bindings = [
   # 直接还原成 Alt+↑ / Alt+↓ 的终端序列转发给应用。
   { key = "ArrowUp", mods = "Control|Alt", chars = "\u001b[1;3A" },
   { key = "ArrowDown", mods = "Control|Alt", chars = "\u001b[1;3B" },
+  # Distinguish Enter modifiers via CSI-u: Shift=13;2u (input_newline) vs Ctrl=13;5u.
   { key = "Return", mods = "Control", chars = "\u001b[13;5u" },
   { key = "NumpadEnter", mods = "Control", chars = "\u001b[13;5u" },
+  { key = "Return", mods = "Shift", chars = "\u001b[13;2u" },
+  { key = "NumpadEnter", mods = "Shift", chars = "\u001b[13;2u" },
+  # Keep OpenCode's output-reading chords distinct from Ctrl-only editor input.
+  { key = "B", mods = "Control|Alt", chars = "\u001b[98;7u" },
+  { key = "D", mods = "Control|Alt", chars = "\u001b[100;7u" },
+  { key = "Y", mods = "Control|Alt", chars = "\u001b[121;7u" },
+  { key = "J", mods = "Control|Alt", chars = "\u001b[106;7u" },
 ]

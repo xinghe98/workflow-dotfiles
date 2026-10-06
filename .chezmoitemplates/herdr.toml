@@ -63,7 +63,7 @@ navigate_workspace_up = ["u", "up"]
 navigate_workspace_down = ["e", "down"]
 previous_workspace = "prefix+u"
 next_workspace = "prefix+e"
-workspace_picker = "ctrl+o"
+workspace_picker = "prefix+ctrl+o"
 # Goto 弹窗内部方向键为 herdr 内置（↑↓/j/k 行、←→ 工作区分组），无配置项可改成 u/e/n/i；
 # 因此只保留前缀入口，直接键位 ctrl+f 归还窗格内程序（readline 前进一字符）。
 goto = "prefix+g"
@@ -81,17 +81,54 @@ next_tab = ["ctrl+tab", "prefix+."]
 switch_tab = ["ctrl+1..9", "prefix+1..9"]
 close_tab = "prefix+shift+w"
 
-resize_mode = ["ctrl+n", "prefix+ctrl+n"]
+resize_mode = "prefix+ctrl+n"
 resize_pane_left = "ctrl+alt+n"
 resize_pane_down = "ctrl+alt+e"
 resize_pane_up = "ctrl+alt+u"
 resize_pane_right = "ctrl+alt+i"
 
 # Move defaults that conflict with Colemak focus/swap or pane creation.
-edit_scrollback = "prefix+shift+v"
+# Reading commands invoke nvim explicitly; server EDITOR can predate shell setup.
+edit_scrollback = ""
 new_workspace = "prefix+shift+o"
 rename_workspace = "prefix+shift+c"
 open_notification_target = "prefix+shift+a"
+
+[[keys.command]]
+key = "prefix+shift+v"
+type = "popup"
+{{- if eq .chezmoi.os "windows" }}
+command = {{ printf "py -3 \"%s/AppData/Roaming/herdr/read-session.py\" --scrollback" .chezmoi.homeDir | quote }}
+{{- else }}
+command = {{ printf "python3 \"%s/.config/herdr/read-session.py\" --scrollback" .chezmoi.homeDir | quote }}
+{{- end }}
+description = "Neovim 阅读当前滚屏"
+width = "95%"
+height = "95%"
+
+[[keys.command]]
+key = "prefix+shift+p"
+type = "popup"
+{{- if eq .chezmoi.os "windows" }}
+command = {{ printf "py -3 \"%s/AppData/Roaming/herdr/read-session.py\" --session" .chezmoi.homeDir | quote }}
+{{- else }}
+command = {{ printf "python3 \"%s/.config/herdr/read-session.py\" --session" .chezmoi.homeDir | quote }}
+{{- end }}
+description = "Neovim 阅读完整 agent 会话"
+width = "95%"
+height = "95%"
+
+[[keys.command]]
+key = "prefix+v"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.toggle"
+description = "nvim 侧边栏"
+
+[[keys.command]]
+key = "prefix+p"
+type = "plugin_action"
+command = "chmarax.herdr-nvim.pick-file"
+description = "打开 agent 正在编辑的文件"
 
 {{- if stat (joinPath .chezmoi.homeDir ".config/herdr/plugins/config/herdr-theme-picker") }}
 [[keys.command]]

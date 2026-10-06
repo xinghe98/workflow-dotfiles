@@ -357,6 +357,82 @@ Windows Terminal 的快捷键是全局设置，所有配置档都会发送上述
 参考 [Windows Terminal sendInput](https://learn.microsoft.com/en-us/windows/terminal/customize-settings/actions#send-input)。
 
 
+### Neovim 键盘工作流（OMP / Herdr / OpenCode）
+
+窗口层使用 Herdr；提示词长编辑、搜索和输出阅读使用现有 Colemak-DH Neovim。
+OMP 输入框启用原生 Vim，由同一个 `tab-plan-toggle.ts` 编辑器扩展适配键位。
+OpenCode 输入框沿用其原生编辑方式，完整 Vim 操作通过外部 Neovim 完成。
+
+| 场景 | 按键 | 行为 |
+| --- | --- | --- |
+| 切换窗格 | `Alt+n/e/u/i` | 左 / 下 / 上 / 右；`Alt+Shift+n/e/u/i` 交换窗格 |
+| 新建 / 缩放窗格 | `Alt+o` / `Alt+f` | 右分屏 / zoom |
+| 标签 | `Ctrl+Tab` / `Ctrl+Shift+Tab` / `Ctrl+1..9` | 切换标签 |
+| 提示词外部编辑 | `Ctrl+G` | OMP / OpenCode 调用 `nvim`；`S` 保存、`Q` 退出，返回草稿，不自动提交 |
+| OMP Normal / Visual / 操作符模式 | `n/e/u/i`、`k/K`、`l`、`N/I`、`U/E`、`h/W` | Colemak 移动、插入、撤销、行首尾、五行移动、词尾 / 前一词；`dkw` 对应 `diw` |
+| 普通输入 / 补全 | `Tab` / `Shift+Tab` / `Enter` / `Esc` | 普通 Tab 切换 write/plan；补全打开时导航、确认、关闭 |
+| OMP 任务中断 | `Esc` | 先关闭补全、退出 Insert 或取消选区 / 操作符；安静 Normal 中连续两次 Esc（500 ms 内）才中断任务 |
+| 消息提交 | `Enter` | OMP 工作中走 steering；`Ctrl+Enter` 为 afterYield；`Shift+Enter` / `Ctrl+J` 换行 |
+| OpenCode 换行 | `Shift+Enter` / `Ctrl+Enter` / `Ctrl+J` | 保留 OpenCode 的换行契约 |
+| 阅读滚屏 | `Ctrl+T` → `Shift+V` | Neovim 只读弹窗，显示该 pane 保留的滚屏 |
+| 阅读完整会话 | `Ctrl+T` → `Shift+P` | 按当前 pane 的会话标识读取 OMP / OpenCode，会话缺失时报错 |
+| Herdr 文件 / 侧边栏 | `Ctrl+T` → `p` / `v` | 现有 herdr-nvim 文件 picker / Neovim 侧边栏 |
+| Neovim diff | `Space g h d` / `Space g h p` | GitSigns 并排 diff / 当前改动块预览 |
+| Neovim 上下文 | `Space a d` / `a t` / `a f` | 选区 / 位置 / 文件引用，只粘贴到 agent 草稿 |
+| Neovim 批注 | `Space a c` / `a l` / `a s` / `a S` | 添加 / 列表 / 粘贴 / 明确提交批注 |
+| Neovim 自带终端 | `Space o t` | 打开项目终端；终端模式连按两次 Esc 返回 Normal |
+
+Herdr workspace picker 改为 `Ctrl+T` → `Ctrl+O`，resize mode 改为
+`Ctrl+T` → `Ctrl+N`；直接 `Ctrl+O` 和补全的 `Ctrl+N` 留给窗格内程序。
+Herdr 的 copy、resize、Goto 内部导航以及 OMP Agent Hub 的固定按键仍由程序决定，
+不能通过这些配置改成 Colemak。OMP 输入框的搜索、宏等未实现的 Vim 功能使用 `Ctrl+G`。
+输入框真实失焦时清除 Esc 中断计时；重新聚焦后的第一个 Esc 只关闭补全或回到
+Normal，已在 Normal 时保持该模式，不提示或预备中断。其他按键会结束这次保护。
+
+
+编辑器环境来自 `dot_config/zsh/dot_zsh/workflow.zsh` 和终端公共模板：
+`EDITOR=nvim`、`VISUAL=nvim`。macOS 的既有 `~/.zshrc` 已接入托管片段。
+Herdr 阅读命令直接调用 `nvim`，不依赖已启动服务端中的旧 `EDITOR`。
+OMP 扩展加载时若 `VISUAL` 和 `EDITOR` 都未设置，会在 OMP 进程内将两者默认设为
+`nvim`；已有编辑器配置保持原样。旧 Herdr pane 不必重启服务：退出并重新启动
+当前 OMP，用 `omp --resume=<会话路径或 ID>` 恢复会话后即可加载新扩展并使用 `Ctrl+G`。
+
+
+阅读脚本源为 `.chezmoitemplates/ai-read.py`，macOS/Linux 部署到
+`~/.config/herdr/read-session.py`，Windows 部署到 `%APPDATA%/herdr/read-session.py`。
+脚本只依赖 Python 标准库；Windows 使用 `py -3`，其他平台使用 `python3`，均需安装 Neovim。
+滚屏不保证包含早期消息；完整会话使用 Herdr 的 `agent_session`：OMP 显式传路径给
+`omp render --plain`（工具结果保留原生折叠展示），OpenCode 显式传 ID 给 `opencode export`，
+将消息、推理、工具结果及其他 part 转为 Markdown。缺少会话元数据时明确报错，
+不会猜“最新会话”或用滚屏冒充完整会话。远程 `--machine` 窗格不在脚本支持范围内。
+完整阅读要求先安装本机状态集成：`herdr integration install omp`、
+`herdr integration install opencode`，然后重新打开对应 agent。OpenCode 安装器生成的
+`plugins/herdr-agent-state.js`、`herdr-tui-session.js` 与 `tui.jsonc` 由 Herdr 管理；
+`tui.jsonc` 仅增加 TUI 插件入口，现有 `tui.json` 快捷键仍生效，不复制这些运行时文件。
+
+阅读临时文件在 Neovim 退出后删除；`readonly nomodifiable` 防止修改。阅读中可以用
+`/` 搜索、`m/M` 跳转结果、`Y` 复制选区，`Q` 退出返回原窗格；也可不打开编辑器直接导出：
+
+```sh
+python3 ~/.config/herdr/read-session.py --session --pane <实际-pane-id> --output /tmp/session.txt
+```
+
+Neovim 上下文桥接位于 `~/.config/nvim/lua/config/omp_herdr.lua`，优先当前 workspace
+内的 OMP，其次 OpenCode，同类优先同 tab 和同工作目录；并列候选要求显式 pane ID。
+`Space a s` 与上下文快捷键只粘贴，`Space a S` 才提交；两种路径均沿用真实 Herdr 集成。
+
+macOS 已在独立 Herdr 会话中验证：OMP / OpenCode 中文多行草稿保存回填且不自动提交；
+OMP 编辑器非零退出保留原草稿，80 行折叠粘贴完整展开，图片经外部编辑后仍以真实 image part
+进入消息；`ck"`、计数 / Visual、撤销、补全 Tab/Shift+Tab/Enter，以及工作中 Esc 的优先级。
+另已走通 Telescope 找文件 → GitSigns diff → 上下文 / 批注粘贴 → 明确提交 → 真实回复，
+并在两种 agent 的完整会话弹窗中核对实际会话标识。OpenCode 状态集成 overlay 加载后，
+`Ctrl+G` 与已有快捷键仍生效。三平台 Herdr / Alacritty 模板均已解析。
+另在实际 OMP 编辑器中验证 Normal / Insert 失焦恢复、旧 Esc 计时清除、正常双 Esc
+中断、同一组件重复聚焦及中间插入按键；在启动时移除 `EDITOR` / `VISUAL` 后，
+`Ctrl+G` 仍打开真实 Neovim 并返回 OMP。
+配置不包含登录凭据或会话数据库；阅读内容是打开时的快照，agent 可继续运行。
+Windows / WSL 的终端实按行为需在对应机器验证，模板语法检查不替代实机验证。
+
 ### OMP
 
 ```sh
