@@ -292,6 +292,27 @@ Windows Terminal 仍保持 `Ctrl+Shift+w` 的外层关闭动作解绑；Herdr �
 从 Herdr 设置界面修改后，将需要同步的字段手工写回 `.chezmoitemplates/herdr.toml`，
 再执行 `chezmoi apply`；不要重新纳管生成文件，否则会破坏单一公共源。
 
+Herdr 美化插件（macOS / Linux，本机安装，不同步插件运行时）：
+
+- `herdr plugin install qintmb/herdr-theme-picker`：依赖 `fzf`（macOS 可用
+  `brew install fzf`）。安装后模板启用 `Ctrl+t`、松开再按 `t` 的主题弹窗，
+  支持搜索、配色预览、Enter 应用与 Esc 取消。选择主题会修改本机 `[theme.custom]`
+  并尝试同步外层终端色板；希望长期保留时需手工同步回公共模板，否则下次
+  `chezmoi apply` 会恢复模板中的 Everforest 配色。
+- `herdr plugin install qintmb/herdr-icon-agent-ui`：依赖 Python 3.11+。
+  将插件 `dist/HerdrAgentIconsMax-Regular.ttf` 安装到系统字体目录（macOS 为
+  `~/Library/Fonts`），在 `herdr plugin config-dir qintmb.herdr-icon-agent-ui`
+  输出的目录创建 `config.toml`，设置 `icons = "font"`、`order = "workspace"`。
+  Kitty 配置将 `U+E1A0-U+E1B0` 映射到 `Herdr Agent Icons Max`，正文保留 Maple Mono。
+  模板检测该插件配置文件后启用分组、Logo、工作旋转动画及完成/等待状态颜色；
+  OMP 行继续消费已有 `$task` 元数据，其他 Agent 使用插件提取的标题。
+
+安装后执行 `herdr server reload-config`，已打开的 Herdr 客户端按 `Ctrl+t` 后
+`Shift+r` 重载；侧栏收起时按 `Ctrl+t` 后 `b` 展开。Kitty 用 `Ctrl+Shift+F5`
+重载字体映射。美化仅增加显示元数据，不修改 Agent 的实际生命周期状态。
+未安装插件的机器保留原生侧栏。已实测主题弹窗与配色预览、OMP 图标 token 和连续动画帧；
+桌面截图不可用，未验证当前 GUI 客户端的最终字体像素效果。
+
 不纳入会话、日志、socket、插件锁、安装包或 agent-detection 缓存。
 Agent 集成属于本机安装产物，不同步 Windows 的 `.ps1` 与 `C:\Users\...` 钩子。
 macOS 安装好相应 Agent CLI 后，按需生成本机集成，例如：

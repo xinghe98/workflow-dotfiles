@@ -93,6 +93,14 @@ new_workspace = "prefix+shift+o"
 rename_workspace = "prefix+shift+c"
 open_notification_target = "prefix+shift+a"
 
+{{- if stat (joinPath .chezmoi.homeDir ".config/herdr/plugins/config/herdr-theme-picker") }}
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-theme-picker.open"
+description = "主题选择器"
+{{- end }}
+
 [ui]
 # 使用原生光标，让 Windows / WSL 中文输入法候选框跟随输入位置。
 host_cursor = "native"
@@ -125,10 +133,8 @@ mouse_capture = true
 copy_on_select = true
 sidebar_width = 30
 
-# Sidebar 行布局：每个 entry 多行展示完整状态——状态图标+文字、工作区/
-# 标签/窗格、分支+git 状态、agent 类型与任务名（$task 由 omp 扩展
-# herdr-omp-auto-name.ts 上报）；row_gap 在条目间留出空行形成分隔，
-# active_row_bg 在透明背景上托出当前行。
+# 已安装 icon-agent-ui 时启用图标、动画与分组；未安装的机器保留原生侧栏。
+# OMP 的 $task 继续显示扩展上报的任务名。
 [ui.sidebar.spaces]
 row_gap = 1
 rows = [
@@ -144,6 +150,43 @@ rows = [
 ]
 
 [ui.sidebar.agents]
+{{- if stat (joinPath .chezmoi.homeDir ".config/herdr/plugins/config/qintmb.herdr-icon-agent-ui/config.toml") }}
+row_gap = 0
+rows = [
+  [{ token = "$hs_group", bold = true }, { token = "$hs_group_dim", dim = true }],
+  [{ token = "$hs_terminals", dim = true }],
+  [{ token = "$hs_tab" }, { token = "$hs_tab_dim", dim = true }],
+  [
+    { token = "$hs_logo", fg = "#7fbbb3" },
+    { token = "$hs_logo_dim", dim = true },
+    { token = "$hs_working", fg = "#a7c080" },
+    { token = "$hs_blocked", fg = "#e67e80", bold = true },
+    { token = "$hs_done", fg = "#a7c080", bold = true },
+    { token = "$hs_idle", dim = true },
+    { token = "$hs_unknown", dim = true },
+  ],
+  [{ token = "$hs_title" }, { token = "$hs_title_dim", dim = true }],
+  [{ token = "$hs_gap" }],
+]
+
+[ui.sidebar.agents.rows_by_agent]
+omp = [
+  [{ token = "$hs_group", bold = true }, { token = "$hs_group_dim", dim = true }],
+  [{ token = "$hs_terminals", dim = true }],
+  [{ token = "$hs_tab" }, { token = "$hs_tab_dim", dim = true }],
+  [
+    { token = "$hs_logo", fg = "#7fbbb3" },
+    { token = "$hs_logo_dim", dim = true },
+    { token = "$hs_working", fg = "#a7c080" },
+    { token = "$hs_blocked", fg = "#e67e80", bold = true },
+    { token = "$hs_done", fg = "#a7c080", bold = true },
+    { token = "$hs_idle", dim = true },
+    { token = "$hs_unknown", dim = true },
+  ],
+  [{ token = "$task", fg = "#d699b6" }],
+  [{ token = "$hs_gap" }],
+]
+{{- else }}
 row_gap = 1
 rows = [
   [
@@ -158,6 +201,7 @@ rows = [
   ],
   [{ token = "$task", fg = "#d699b6" }],
 ]
+{{- end }}
 
 [ui.sound]
 enabled = true
