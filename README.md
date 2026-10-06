@@ -384,6 +384,8 @@ OpenCode 输入框沿用其原生编辑方式，完整 Vim 操作通过外部 Ne
 
 Herdr workspace picker 改为 `Ctrl+T` → `Ctrl+O`，resize mode 改为
 `Ctrl+T` → `Ctrl+N`；直接 `Ctrl+O` 和补全的 `Ctrl+N` 留给窗格内程序。
+Herdr 的 Goto 列表使用 `Ctrl+F`，保留 `Ctrl+T` → `g`；列表内按 `/` 搜索
+agent，按 `Enter` 跳转。`Ctrl+F` 由 Herdr 截获，窗格内程序不再收到该按键。
 Herdr 的 copy、resize、Goto 内部导航以及 OMP Agent Hub 的固定按键仍由程序决定，
 不能通过这些配置改成 Colemak。OMP 输入框的搜索、宏等未实现的 Vim 功能使用 `Ctrl+G`。
 输入框真实失焦时清除 Esc 中断计时；重新聚焦后的第一个 Esc 只关闭补全或回到

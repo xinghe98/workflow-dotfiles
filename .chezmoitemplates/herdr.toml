@@ -65,8 +65,8 @@ previous_workspace = "prefix+u"
 next_workspace = "prefix+e"
 workspace_picker = "prefix+ctrl+o"
 # Goto 弹窗内部方向键为 herdr 内置（↑↓/j/k 行、←→ 工作区分组），无配置项可改成 u/e/n/i；
-# 因此只保留前缀入口，直接键位 ctrl+f 归还窗格内程序（readline 前进一字符）。
-goto = "prefix+g"
+# Ctrl+F 打开 Goto 列表；保留前缀入口，列表内按 / 搜索 agent。
+goto = ["ctrl+f", "prefix+g"]
 
 # Zellij's automatic NewPane becomes an explicit right split.
 split_vertical = ["alt+o", "prefix+r"]
