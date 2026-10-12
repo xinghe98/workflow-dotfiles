@@ -124,14 +124,16 @@ chezmoi diff
 
 ## 修改配置
 
-Herdr、Alacritty、Zellij 在所有系统上各自只有一份公共源配置。系统目录中的文件
-由同一模板生成；平台差异只在公共源内条件化，不维护两份主题、键位或 UI 设置。
+Herdr、Alacritty、Zellij、Tern 在所有系统上各自只有一份公共源配置。系统目录
+中的文件由同一模板生成；平台差异只在公共源内条件化，不维护两份主题、键位或
+UI 设置。
 
 | 应用 | 唯一公共源配置（相对仓库根目录） |
 |---|---|
 | Herdr | `.chezmoitemplates/herdr.toml` |
 | Alacritty | `.chezmoitemplates/alacritty.toml` |
 | Zellij | `.chezmoitemplates/zellij.kdl` |
+| Tern | `.chezmoitemplates/tern/settings.json`、`plugin.toml`、`window.luau` |
 
 下面的公共源编辑命令在 Windows Nushell / PowerShell 与 macOS / Linux 上相同。
 `chezmoi cd` 会进入当前机器的源仓库，不依赖用户名或绝对路径。
@@ -465,24 +467,60 @@ chezmoi re-add ~/.omp/agent/skills/herdr/SKILL.md
 新机器运行 `chezmoi apply` 后，正常启动 OMP 即可发现该技能；
 Herdr 和所需 agent CLI 仍需在本机安装，状态集成按前面的 Herdr 说明单独安装。
 
-### Tern（Windows）
+### Tern
 
-管理 `%APPDATA%\Tern\settings.json` 和 `plugins/alacritty-look/` 下的
-`plugin.toml`、`window.luau`。设置源为
-`AppData/Roaming/Tern/settings.json.tmpl`，包含字体、外观、复制行为与直接快捷键；
-插件固定顶栏布局并为终端网格留白。
+| 平台 | 仓库部署目录（含 `plugins/alacritty-look/`） |
+|---|---|
+| Windows | `%APPDATA%\Tern` |
+| macOS | `~/Library/Application Support/Tern` |
+| Linux | `~/.config/tern` |
 
-新机器需安装 Tern、`Maple Mono NF CN` 字体和 Nushell。
-Nushell 路径由当前用户主目录生成，预期安装位置为
-`%LOCALAPPDATA%\Programs\nu\bin\nu.exe`；路径不同则先修改设置模板。
-`files.json`、账户文件、锁文件、备份和 `%LOCALAPPDATA%\Tern` 运行数据不纳入同步。
-macOS / Linux 沿用仓库的 `AppData` 忽略规则，不部署这组 Windows 配置。
+`settings.json` 与插件 `plugin.toml`、`window.luau` 的唯一公共源为
+`.chezmoitemplates/tern/` 下同名文件，包含字体、外观、复制行为与直接快捷键；
+三个平台的 `.tmpl` 入口都只引用该公共源。插件固定顶栏布局并为终端网格留白。
+修改字体或键位时编辑公共源而不是生成的一行包装模板：
+
+```sh
+chezmoi cd
+nvim .chezmoitemplates/tern/settings.json
+chezmoi apply
+```
+
+shell 只在 Windows 上写入：公共源内按平台条件化，生成指向当前用户主目录的
+Nushell 路径，预期安装位置为 `%LOCALAPPDATA%\Programs\nu\bin\nu.exe`；
+路径不同则先修改公共源。macOS / Linux 不写 `shell` 字段，由 Tern 选择系统
+默认 shell，不要求为 Tern 额外安装 shell。键位、字体与插件内容三个平台一致。
+
+目标目录只覆盖默认位置：macOS 的配置与状态目录同在 `Application Support/Tern`，
+Linux 状态目录 `$XDG_STATE_HOME/tern`（默认 `~/.local/state/tern`）不纳入同步。
+若使用非默认的 `XDG_CONFIG_HOME` 或设置 `TERN_CONFIG_DIR`，需要先调整 chezmoi
+部署入口，使其与 Tern 的实际配置目录一致；只替换 `apply` 命令中的路径不会迁移
+配置。`XDG_STATE_HOME` 指定的运行数据仍留在本机。`files.json`、账户文件、锁文件、备份和 `%LOCALAPPDATA%\Tern`
+运行数据不纳入同步。
+
+应用与验证（macOS 路径含空格，需加引号）：
 
 ```nu
-chezmoi edit --apply ($env.APPDATA | path join 'Tern' 'settings.json')
 chezmoi apply ($env.APPDATA | path join 'Tern')
 chezmoi verify ($env.APPDATA | path join 'Tern')
 ```
+
+```sh
+chezmoi apply "$HOME/Library/Application Support/Tern"          # macOS
+chezmoi verify "$HOME/Library/Application Support/Tern"
+chezmoi apply "$HOME/.config/tern"                            # Linux 默认
+chezmoi verify "$HOME/.config/tern"
+```
+
+在其他机器同步改动：`chezmoi update`。
+
+新机器需先安装 Tern 本体和 `Maple Mono NF CN` 字体；仓库不提供自动安装。
+macOS 使用 Homebrew cask `brew install --cask font-maple-mono-nf-cn`
+（<https://formulae.brew.sh/cask/font-maple-mono-nf-cn>）；Linux 从官方发布页
+<https://github.com/subframe7536/maple-font/releases> 下载
+`MapleMono-NF-CN` 包，解压 TTF 到 `~/.local/share/fonts/` 后执行
+`fc-cache -fv`；Windows 同样从该发布页下载并右键安装。macOS / Linux 上
+Tern 本体的安装方式和字体是否被正确识别未在本仓库验证。
 
 ### Alacritty
 

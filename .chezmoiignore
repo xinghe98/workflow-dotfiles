@@ -4,9 +4,15 @@ README.md
 .config/alacritty
 .config/herdr
 .config/kitty
+.config/tern
 .config/zsh
+Library
+{{- else if eq .chezmoi.os "darwin" }}
+.config/tern
+AppData
 {{- else }}
 AppData
+Library
 {{- end }}
 
 .omp/agent/*.db
@@ -80,9 +86,23 @@ AppData/Roaming/herdr/.plugins.lock
 .config/herdr/.plugins.lock
 
 # Tern: settings.json and custom plugins are managed; runtime state and backups stay local.
+# macOS colocates config and state under Application Support; Linux state lives in ~/.local/state/tern.
 AppData/Local/Tern
 AppData/Roaming/Tern/files.json
 AppData/Roaming/Tern/account*
 AppData/Roaming/Tern/*.lock
 AppData/Roaming/Tern/*.bak*
 AppData/Roaming/Tern/settings.*.json
+Library/Application Support/Tern/files.json
+Library/Application Support/Tern/account*
+Library/Application Support/Tern/*.lock
+Library/Application Support/Tern/*.bak*
+Library/Application Support/Tern/settings.*.json
+Library/Application Support/Tern/sessions
+Library/Application Support/Tern/plugin-data
+.config/tern/files.json
+.config/tern/account*
+.config/tern/*.lock
+.config/tern/*.bak*
+.config/tern/settings.*.json
+.local/state/tern
