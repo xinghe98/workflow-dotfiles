@@ -78,3 +78,11 @@ AppData/Roaming/herdr/.plugins.lock
 .config/herdr/locks
 .config/herdr/*.lock
 .config/herdr/.plugins.lock
+
+# Tern: settings.json and custom plugins are managed; runtime state and backups stay local.
+AppData/Local/Tern
+AppData/Roaming/Tern/files.json
+AppData/Roaming/Tern/account*
+AppData/Roaming/Tern/*.lock
+AppData/Roaming/Tern/*.bak*
+AppData/Roaming/Tern/settings.*.json

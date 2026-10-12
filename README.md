@@ -1,6 +1,6 @@
 # Workflow Dotfiles
 
-使用 chezmoi 和 Git 管理 Zellij、Herdr、OMP、Alacritty、Kitty、OpenCode 和 Zeron 配置。
+使用 chezmoi 和 Git 管理 Zellij、Herdr、Tern、OMP、Alacritty、Kitty、OpenCode 和 Zeron 配置。
 
 | 平台 | 终端默认启动 | Alacritty 配置位置 | Kitty 配置位置 |
 |---|---|---|---|
@@ -464,6 +464,25 @@ chezmoi re-add ~/.omp/agent/skills/herdr/SKILL.md
 
 新机器运行 `chezmoi apply` 后，正常启动 OMP 即可发现该技能；
 Herdr 和所需 agent CLI 仍需在本机安装，状态集成按前面的 Herdr 说明单独安装。
+
+### Tern（Windows）
+
+管理 `%APPDATA%\Tern\settings.json` 和 `plugins/alacritty-look/` 下的
+`plugin.toml`、`window.luau`。设置源为
+`AppData/Roaming/Tern/settings.json.tmpl`，包含字体、外观、复制行为与直接快捷键；
+插件固定顶栏布局并为终端网格留白。
+
+新机器需安装 Tern、`Maple Mono NF CN` 字体和 Nushell。
+Nushell 路径由当前用户主目录生成，预期安装位置为
+`%LOCALAPPDATA%\Programs\nu\bin\nu.exe`；路径不同则先修改设置模板。
+`files.json`、账户文件、锁文件、备份和 `%LOCALAPPDATA%\Tern` 运行数据不纳入同步。
+macOS / Linux 沿用仓库的 `AppData` 忽略规则，不部署这组 Windows 配置。
+
+```nu
+chezmoi edit --apply ($env.APPDATA | path join 'Tern' 'settings.json')
+chezmoi apply ($env.APPDATA | path join 'Tern')
+chezmoi verify ($env.APPDATA | path join 'Tern')
+```
 
 ### Alacritty
 

@@ -1,0 +1,7 @@
+# 加载终端网格留白样式，匹配 Alacritty 的内容间距。
+schema = 1
+id = "alacritty-look"
+name = "Alacritty Look"
+version = "1.0.0"
+description = "Match Alacritty terminal content spacing."
+window = "window.luau"
