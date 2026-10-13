@@ -20,6 +20,8 @@ Library
 .omp/agent/*.db-shm
 .omp/agent/sessions
 .omp/agent/terminal-sessions
+# Agent 协调请求与回执仅保留本机，不同步会话正文。
+.omp/agent/coordination
 .omp/agent/blobs
 .omp/agent/cache
 .omp/agent/secrets.yml
