@@ -1,4 +1,6 @@
 README.md
+# 可独立安装的 skill 发布源不映射到家目录。
+skills
 
 {{- if eq .chezmoi.os "windows" }}
 .config/alacritty
@@ -22,6 +24,7 @@ Library
 .omp/agent/terminal-sessions
 # Agent 协调请求与回执仅保留本机，不同步会话正文。
 .omp/agent/coordination
+.omp/agent/backups
 .omp/agent/blobs
 .omp/agent/cache
 .omp/agent/secrets.yml

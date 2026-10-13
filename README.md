@@ -14,6 +14,17 @@ Windows 的 Alacritty 启动目录和 Herdr 新窗格默认目录均为用户的
 `wsl.exe` 将该 Windows 路径映射为 `/mnt/c/Users/<用户名>/Documents/`。
 macOS 保持原有主目录与 Herdr 的 `follow` 目录策略。
 
+## 独立安装 Tern skill
+
+只需要 omp 的 Tern/Herdr 自动识别与可靠 agent 通信时，可独立安装 [Tern skill](skills/tern/README.md)，无需应用整套 dotfiles。需要 Git 和 Node.js 24+：
+
+```sh
+git clone --depth 1 --branch tern-v1.0.0 https://github.com/xinghe98/workflow-dotfiles.git
+node workflow-dotfiles/skills/tern/scripts/install.mjs
+```
+
+安装器包含全局感知扩展、持久化请求/回执规则与 skill，自带备份并支持重复安装。安装后重载扩展或重启 omp 恢复会话。发布源目录 `skills/` 不由 chezmoi 映射到家目录，通信记录及安装备份也不参与同步。
+
 ## 新机器配置
 
 仓库中的 OpenCode 主配置使用 age 加密。首次应用前，先从独立备份恢复原有
