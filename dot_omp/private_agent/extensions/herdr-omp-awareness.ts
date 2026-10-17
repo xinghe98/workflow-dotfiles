@@ -133,7 +133,8 @@ export async function terminalContext(ctx: Context): Promise<string> {
         `终端=Tern；自身窗格=${self.pane}；自身会话=${line(sessionFile)}；身份由当前 omp 会话文件与实时 inspect 唯一匹配。`,
         `其他 omp agent（同目录优先，最多20项，共${peers.length}项；同仓库不同子目录也可能相关）：${line(roster)}`,
         "实时查看：tern inspect --json；读取：tern capture <明确窗格ID> --surfaces。",
-        "定向通信：tern send <明确窗格ID> paste \"消息\"，成功后 tern send <同一ID> keys enter。命令参数须按实际 shell 转义；禁止 @focused。多窗口先核实 --window KEY。",
+        "定向通信：先用实时 tern capture <明确窗格ID> --surfaces 核实目标仍在 agent 输入界面且输入框为空，再 tern send <明确窗格ID> paste \"消息\"；成功后仅在确认输入框中只有本次通知、没有混入用户内容时，才 tern send <同一ID> keys enter。命令参数须按实际 shell 转义；禁止 @focused。多窗口先核实 --window KEY。",
+        "用户输入优先：输入框有未发送内容、用户正在打字或无法确认输入框为空时，延后所有协作终端通知（含请求、回执、再次提醒），不得粘贴、按 Enter、清空、覆盖或代发用户草稿。保留已写信箱文件与原请求ID，继续独立工作并在后续步骤重新核实；有草稿时等用户自行发送、确认输入框已空再投递。短暂停顿、quiet_ms、working=false 和 idle 均不能证明输入已发送；发送过程中若混入用户内容，立即停止后续按键，不能自动提交混合内容。",
         "仅在无独立工作时短暂等待；tern wait 的 idle 只表示安静，随后读取持久化回执确认，禁止反复长时间 sleep 抓屏。",
         coordination,
       ].join("\n");
