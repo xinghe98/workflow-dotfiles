@@ -9,6 +9,8 @@
   "opacity": 15,
 {{- if eq .chezmoi.os "windows" }}
   "shell": {{ printf "%s/AppData/Local/Programs/nu/bin/nu.exe" (.chezmoi.homeDir | replace "\\" "/") | toJson }},
+{{- else if eq .chezmoi.os "darwin" }}
+  "option_as_alt": "both",
 {{- end }}
   "keybinds": {
     "alt+1": [],

@@ -1,5 +1,17 @@
-shellPath: {{ if eq .chezmoi.os "windows" }}{{ lookPath "nu" | quote }}{{ else if eq .chezmoi.os "darwin" }}"/bin/zsh"{{ else }}"/usr/bin/zsh"{{ end }}
+shellPath: {{ if eq .chezmoi.os "windows" }}{{ lookPath "nu" | quote }}{{ else if eq .chezmoi.os "darwin" }}/bin/zsh{{ else }}"/usr/bin/zsh"{{ end }}
 modelRoles:
+{{- if eq .chezmoi.os "darwin" }}
+  default: magpie/codex/gpt-6.1-sol:high
+  plan: magpie/codex/gpt-6-astra:xhigh
+  task: opencode-go/deepseek-v4.1-flash:max
+  smol: magpie/grok/grok-4.7:high
+  tiny: opencode-go/deepseek-v4.1-flash:max
+  slow: magpie/auto/claude-opus-5-5:high
+  designer: kimi-code/k3:max
+  commit: opencode-go/deepseek-v4.1-flash:max
+  vision: magpie/auto/gemini-3.8-flash:high
+  advisor: magpie/codex/gpt-6-astra:high
+{{- else }}
   default: openai-codex/gpt-6-astra:high
   plan: openai-codex/gpt-6-astra:high
   task: opencode-go/deepseek-v4.1-flash:max
@@ -10,6 +22,7 @@ modelRoles:
   commit: opencode-go/deepseek-v4.1-flash:max
   vision: google-antigravity/gemini-3.7-flash:high
   advisor: google-antigravity/gemini-3.8-flash:high
+{{- end }}
 symbolPreset: nerd
 theme:
   light: light-catppuccin
@@ -18,11 +31,19 @@ tui:
   tight: true
   vimMode: true
   vimModeDisplay: text
+{{- if eq .chezmoi.os "darwin" }}
+setupVersion: 3
+hideThinkingBlock: true
+dev:
+  autoqaConsent: granted
+defaultThinkingLevel: max
+{{- else }}
 setupVersion: 2
 hideThinkingBlock: true
 dev:
   autoqaConsent: granted
 defaultThinkingLevel: auto
+{{- end }}
 composer:
   shape: claude
 task:
@@ -40,3 +61,8 @@ terminal:
   showProgress: true
 display:
   showTokenUsage: true
+{{- if eq .chezmoi.os "darwin" }}
+  showTurnTime: true
+browser:
+  relay: true
+{{- end }}

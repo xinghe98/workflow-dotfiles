@@ -28,8 +28,8 @@ alwaysApply: true
 
 | Agent 标识 | 类型 | 负责切片 | 模型（具体选择器） | 依据 |
 |---|---|---|---|---|
-| ScoutA | scout | 摸清后端认证模块 | `@smol` → xai-oauth/grok-4.5:high | modelRoles.smol |
-| WorkerB | task | 实现 X 接口 | opencode-go/deepseek-v4-flash:max | 继承主会话模型 |
+| ScoutA | scout | 摸清后端认证模块 | `@smol` → xai-oauth/grok-4.7:high | modelRoles.smol |
+| WorkerB | task | 实现 X 接口 | opencode-go/deepseek-v4.1-flash:max | 继承主会话模型 |
 
 - 模型必须写具体选择器（`provider/modelId`，可带 `:thinking` 后缀；或已解析的 `@role` 别名），禁止只写「默认模型」「自动」等模糊表述。
 - 解析依据，优先级从高到低：
@@ -49,15 +49,17 @@ alwaysApply: true
 - 执行中新增或变更切片、需要新子 agent 时，先补入清单（写明模型与依据）再派发；执行期间发生的模型切换（fallback、prewalk 交接、临时提升）必须记录在最终汇报中。
 - 收尾时对照清单逐项核对：每个子 agent 实际使用的模型与清单一致，作为完成标准之一；不一致且未记录说明的，不得视为完成。
 
-## 参考：当前 modelRoles 快照（2026-08-09，以 config.yml 为准）
+## 参考：当前 modelRoles 快照（以 config.yml 为准）
 
-| role | 模型 |
-|---|---|
-| default | opencode-go/deepseek-v4-flash:max |
-| plan | openai-codex/gpt-5.6-terra:xhigh |
-| task | opencode-go/deepseek-v4-flash:max |
-| smol | xai-oauth/grok-4.5:high |
-| tiny | deepseek/deepseek-v4-flash:max |
-| slow | openai-codex/gpt-5.6-sol:xhigh |
-| designer | xai-oauth/grok-4.5:xhigh |
-| commit | opencode-go/deepseek-v4-flash:max |
+| role | 模型（macOS / `darwin`） | 模型（Windows / Linux） |
+|---|---|---|
+| default | magpie/codex/gpt-6.1-sol:high | openai-codex/gpt-6-astra:high |
+| plan | magpie/codex/gpt-6-astra:xhigh | openai-codex/gpt-6-astra:high |
+| task | opencode-go/deepseek-v4.1-flash:max | opencode-go/deepseek-v4.1-flash:max |
+| smol | magpie/grok/grok-4.7:high | xai-oauth/grok-4.7:high |
+| tiny | opencode-go/deepseek-v4.1-flash:max | opencode-go/deepseek-v4.1-flash:max |
+| slow | magpie/auto/claude-opus-5-5:high | opencode-go/deepseek-v4.1-flash:max |
+| designer | kimi-code/k3:max | kimi-code/k3:max |
+| commit | opencode-go/deepseek-v4.1-flash:max | opencode-go/deepseek-v4.1-flash:max |
+| vision | magpie/auto/gemini-3.8-flash:high | google-antigravity/gemini-3.7-flash:high |
+| advisor | magpie/codex/gpt-6-astra:high | google-antigravity/gemini-3.8-flash:high |

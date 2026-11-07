@@ -1,7 +1,8 @@
--- 固定顶栏缩放，并为终端网格增加横向 8 px、纵向 10 px 的留白。
+-- 固定顶栏缩放（macOS 保留红绿灯留白），并为终端网格增加横向 8 px、纵向 10 px 的留白。
 tern.css("spacing", [[
 #tabbar {
     zoom: 1 !important;
+    padding-left: max(12px, var(--tl-inset, 0px)) !important;
 }
 
 #panel {

@@ -19,7 +19,7 @@ macOS 保持原有主目录与 Herdr 的 `follow` 目录策略。
 只需要 omp 的 Tern/Herdr 自动识别与可靠 agent 通信时，可独立安装 [Tern skill](skills/tern/README.md)，无需应用整套 dotfiles。需要 Git 和 Node.js 24+：
 
 ```sh
-git clone --depth 1 --branch tern-v1.0.0 https://github.com/xinghe98/workflow-dotfiles.git
+git clone --depth 1 --branch tern-v2.0.0 https://github.com/xinghe98/workflow-dotfiles.git
 node workflow-dotfiles/skills/tern/scripts/install.mjs
 ```
 
@@ -500,7 +500,7 @@ chezmoi apply
 shell 只在 Windows 上写入：公共源内按平台条件化，生成指向当前用户主目录的
 Nushell 路径，预期安装位置为 `%LOCALAPPDATA%\Programs\nu\bin\nu.exe`；
 路径不同则先修改公共源。macOS / Linux 不写 `shell` 字段，由 Tern 选择系统
-默认 shell，不要求为 Tern 额外安装 shell。键位、字体与插件内容三个平台一致。
+默认 shell，不要求为 Tern 额外安装 shell；macOS 额外写入 `"option_as_alt": "both"`（与 Alacritty 一致，使 Rime 等中文输入法下 Option 组合键仍作为 Alt 发送）。键位、字体与插件内容三个平台一致，其中 `alacritty-look` 插件在固定 `#tabbar` 缩放为 `1` 时通过 `--tl-inset` 保留 macOS 窗口红绿灯控制按钮的左侧留白。
 
 目标目录只覆盖默认位置：macOS 的配置与状态目录同在 `Application Support/Tern`，
 Linux 状态目录 `$XDG_STATE_HOME/tern`（默认 `~/.local/state/tern`）不纳入同步。
@@ -530,7 +530,7 @@ macOS 使用 Homebrew cask `brew install --cask font-maple-mono-nf-cn`
 （<https://formulae.brew.sh/cask/font-maple-mono-nf-cn>）；Linux 从官方发布页
 <https://github.com/subframe7536/maple-font/releases> 下载
 `MapleMono-NF-CN` 包，解压 TTF 到 `~/.local/share/fonts/` 后执行
-`fc-cache -fv`；Windows 同样从该发布页下载并右键安装。macOS / Linux 上
+`fc-cache -fv`；Windows 同样从该发布页下载并右键安装。Linux 上
 Tern 本体的安装方式和字体是否被正确识别未在本仓库验证。
 
 ### Alacritty
