@@ -1,0 +1,28 @@
+{
+  "$schema": "https://antigravity.google/schemas/v1/settings.json",
+  "altScreenMode": "always",
+  "colorScheme": "tokyo night",
+  "editorMode": "vim",
+  "model": "Claude Opus 5.5 (Medium)",
+  "permissions": {
+    "allow": [
+      "command(hc)"
+    ]
+  },
+  "queuedMessages": "send-immediately",
+  "showTips": false,
+  "trustedWorkspaces": [
+    {{ joinPath .chezmoi.homeDir "Documents/QingFan/frontend" | toJson }},
+    {{ .chezmoi.homeDir | toJson }},
+    {{ joinPath .chezmoi.homeDir "Documents/workflow-dotfiles" | toJson }},
+    {{ joinPath .chezmoi.homeDir "Documents/bfxt_fast" | toJson }},
+    {{- if eq .chezmoi.os "darwin" }}
+    "/private/tmp"
+    {{- else if eq .chezmoi.os "windows" }}
+    {{ joinPath .chezmoi.homeDir "AppData/Local/Temp" | toJson }}
+    {{- else }}
+    "/tmp"
+    {{- end }}
+  ],
+  "vimInsertFirst": true
+}

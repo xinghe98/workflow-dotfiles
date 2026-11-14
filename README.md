@@ -191,6 +191,11 @@ Windows 部署到 `%APPDATA%\herdr\config.toml`，macOS / Linux 部署到
 Colemak 方向键、底部标签栏与常驻快捷键提示、窗格边框、鼠标选中即复制。
 新标签直接创建，不弹出命名对话框；保留 Herdr 侧栏、声音和应用内通知。
 
+Herdr GUI 的 `keys.json` / `settings.json` 从 `.chezmoitemplates/herdr-app/` 生成。
+macOS 写到 `~/.config/herdr-app/`（Apple 默认键 + `option_as_alt`）。Linux 也写到这里，但是 PC 默认键。
+Windows 同时写 `%APPDATA%\herdr-app\` 和 `~/.config/herdr-app\`，内容相同，都是 PC 默认键，不含 `cmd`（Windows 上那是 Win 键）。
+键位对齐 Tern：同一份 `Alt`/`Ctrl` 用户键在三个系统上都有。
+
 Windows 与 macOS 下 Alacritty 默认启动 Herdr（`program = "herdr"`，无参数），附加到已存在的
 默认持久会话；会话未运行时自动创建。工作区、标签和窗格由后台服务持有，
 关闭终端或分离客户端不会结束其中的进程。
@@ -341,6 +346,12 @@ herdr integration status
 
 安装集成不等于迁移 Agent 登录凭据；新机器仍需登录自己的账户。
 配置契约参见 [Herdr 配置文档](https://herdr.dev/docs/configuration/)。
+
+### Antigravity CLI（agy）
+
+`~/.gemini/antigravity-cli/settings.json` 与 `keybindings.json` 由 chezmoi 管理。
+`settings.json` 里的信任目录用家目录拼接；macOS 额外信任 `/private/tmp`，Linux 信任 `/tmp`，Windows 信任 `%USERPROFILE%\AppData\Local\Temp`。
+不管理会话、历史、OAuth、`config.json` 里的主机名和 sidecar 状态，也不管理 `~/.gemini/settings.json`。
 
 ### Windows Terminal
 
