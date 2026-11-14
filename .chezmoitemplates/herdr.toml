@@ -8,26 +8,25 @@ onboarding = false
 name = "catppuccin"
 auto_switch = false
 
-# panel_bg/sidebar_bg = "reset" 保留终端背景透明，对齐 nvim 的
-# transparent_background_level = 1。
+# 实色 Everforest，与本机正在用的 Herdr CLI 一致。
 [theme.custom]
-panel_bg = "reset"
-sidebar_bg = "reset"
-surface_dim = "#232a2e"
-surface0 = "#475258"
-surface1 = "#3d484d"
+panel_bg = "#2d353b"
+sidebar_bg = "#262d32"
+surface_dim = "#293036"
+surface0 = "#343f44"
+surface1 = "#859289"
 active_row_bg = "#343f44"
-selection_bg = "#543a48"
-overlay0 = "#7a8478"
-overlay1 = "#859289"
+selection_bg = "#414b51"
+overlay0 = "#859289"
+overlay1 = "#d3c6aa"
 text = "#d3c6aa"
-subtext0 = "#9da9a0"
-accent = "#a7c080"
+subtext0 = "#d3c6aa"
+accent = "#7fbbb3"
 green = "#a7c080"
 teal = "#83c092"
 blue = "#7fbbb3"
 yellow = "#dbbc7f"
-peach = "#e69875"
+peach = "#e67e80"
 red = "#e67e80"
 mauve = "#d699b6"
 [terminal]

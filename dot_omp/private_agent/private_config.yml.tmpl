@@ -1,16 +1,16 @@
 shellPath: {{ if eq .chezmoi.os "windows" }}{{ lookPath "nu" | quote }}{{ else if eq .chezmoi.os "darwin" }}/bin/zsh{{ else }}"/usr/bin/zsh"{{ end }}
 modelRoles:
 {{- if eq .chezmoi.os "darwin" }}
-  default: magpie/codex/gpt-6.1-sol:high
-  plan: magpie/codex/gpt-6-astra:xhigh
-  task: opencode-go/deepseek-v4.1-flash:max
+  default: magpie/grok/grok-4.7:high
+  plan: magpie/antigravity/gemini-4-carbon:max
+  task: magpie/antigravity/gemini-4-hydrogen:max
   smol: magpie/grok/grok-4.7:high
   tiny: opencode-go/deepseek-v4.1-flash:max
   slow: magpie/auto/claude-opus-5-5:high
   designer: kimi-code/k3:max
   commit: opencode-go/deepseek-v4.1-flash:max
-  vision: magpie/auto/gemini-3.8-flash:high
-  advisor: magpie/codex/gpt-6-astra:high
+  vision: google-antigravity/gemini-3.7-flash:high
+  advisor: magpie/grok/grok-4.7@500k:max
 {{- else }}
   default: openai-codex/gpt-6-astra:high
   plan: openai-codex/gpt-6-astra:high

@@ -53,13 +53,13 @@ alwaysApply: true
 
 | role | 模型（macOS / `darwin`） | 模型（Windows / Linux） |
 |---|---|---|
-| default | magpie/codex/gpt-6.1-sol:high | openai-codex/gpt-6-astra:high |
-| plan | magpie/codex/gpt-6-astra:xhigh | openai-codex/gpt-6-astra:high |
+| default | magpie/grok/grok-4.7:high | openai-codex/gpt-6-astra:high |
+| plan | magpie/antigravity/gemini-4-carbon:max | openai-codex/gpt-6-astra:high |
 | task | opencode-go/deepseek-v4.1-flash:max | opencode-go/deepseek-v4.1-flash:max |
 | smol | magpie/grok/grok-4.7:high | xai-oauth/grok-4.7:high |
 | tiny | opencode-go/deepseek-v4.1-flash:max | opencode-go/deepseek-v4.1-flash:max |
 | slow | magpie/auto/claude-opus-5-5:high | opencode-go/deepseek-v4.1-flash:max |
 | designer | kimi-code/k3:max | kimi-code/k3:max |
 | commit | opencode-go/deepseek-v4.1-flash:max | opencode-go/deepseek-v4.1-flash:max |
-| vision | magpie/auto/gemini-3.8-flash:high | google-antigravity/gemini-3.7-flash:high |
-| advisor | magpie/codex/gpt-6-astra:high | google-antigravity/gemini-3.8-flash:high |
+| vision | google-antigravity/gemini-3.7-flash:high | google-antigravity/gemini-3.7-flash:high |
+| advisor | magpie/grok/grok-4.7@500k:max | google-antigravity/gemini-3.8-flash:high |
