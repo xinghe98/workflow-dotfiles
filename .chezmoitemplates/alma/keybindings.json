@@ -1,0 +1,6 @@
+{
+  "newChatThread": "Alt+T",
+  "nextThread": "Ctrl+Tab",
+  "previousThread": "Ctrl+Shift+Tab",
+  "commandPalette": "{{ if eq .chezmoi.os "darwin" }}Cmd+K{{ else }}Ctrl+Shift+P{{ end }}"
+}

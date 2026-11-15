@@ -196,6 +196,11 @@ macOS 写到 `~/.config/herdr-app/`（Apple 默认键 + `option_as_alt`）。Lin
 Windows 同时写 `%APPDATA%\herdr-app\` 和 `~/.config/herdr-app\`，内容相同，都是 PC 默认键，不含 `cmd`（Windows 上那是 Win 键）。
 键位对齐 Tern：同一份 `Alt`/`Ctrl` 用户键在三个系统上都有。
 
+Alma 的快捷键存在应用数据库里，chezmoi 以 `.chezmoitemplates/alma/keybindings.json` 为源，
+生成 `~/.config/alma/keybindings.json`，apply 后再写回本机 Alma。改键只编辑这份模板。
+macOS 命令面板是 `Cmd+K`，其他系统是 `Ctrl+Shift+P`。当前固定的是：新对话 `Alt+T`，
+下一个对话 `Ctrl+Tab`，上一个对话 `Ctrl+Shift+Tab`。
+
 Windows 与 macOS 下 Alacritty 默认启动 Herdr（`program = "herdr"`，无参数），附加到已存在的
 默认持久会话；会话未运行时自动创建。工作区、标签和窗格由后台服务持有，
 关闭终端或分离客户端不会结束其中的进程。

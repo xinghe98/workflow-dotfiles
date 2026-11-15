@@ -1,0 +1,60 @@
+#!/bin/sh
+# {{ includeTemplate "alma/keybindings.json" . | sha256sum }}
+set -eu
+cfg="${HOME}/.config/alma/keybindings.json"
+[ -f "$cfg" ] || exit 0
+{{- if ne .chezmoi.os "darwin" }}
+{{- if ne .chezmoi.os "linux" }}
+exit 0
+{{- end }}
+{{- end }}
+db="{{ if eq .chezmoi.os "darwin" }}${HOME}/Library/Application Support/alma/chat_threads.db{{ else }}${XDG_DATA_HOME:-${HOME}/.local/share}/alma/chat_threads.db{{ end }}"
+python3 - "$cfg" "$db" << 'PY'
+import json, os, sqlite3, sys, urllib.request
+from datetime import datetime, timezone
+
+cfg, db = sys.argv[1], sys.argv[2]
+with open(cfg, encoding="utf-8") as fh:
+    bindings = json.load(fh)
+
+def via_api():
+    try:
+        with urllib.request.urlopen("http://127.0.0.1:23001/api/settings", timeout=2) as resp:
+            settings = json.load(resp)
+    except Exception:
+        return False
+    if not isinstance(settings, dict):
+        return False
+    settings["keybindings"] = bindings
+    payload = json.dumps(settings).encode()
+    req = urllib.request.Request(
+        "http://127.0.0.1:23001/api/settings",
+        data=payload,
+        headers={"Content-Type": "application/json"},
+        method="PUT",
+    )
+    with urllib.request.urlopen(req, timeout=5) as resp:
+        resp.read()
+    return True
+
+if via_api():
+    raise SystemExit(0)
+if not os.path.exists(db):
+    raise SystemExit(0)
+con = sqlite3.connect(db, timeout=3)
+try:
+    row = con.execute("SELECT settings_data FROM app_settings WHERE id = 'default'").fetchone()
+    if not row:
+        raise SystemExit(0)
+    data = json.loads(row[0])
+    if not isinstance(data, dict):
+        raise SystemExit(0)
+    data["keybindings"] = bindings
+    con.execute(
+        "UPDATE app_settings SET settings_data = ?, updated_at = ? WHERE id = 'default'",
+        (json.dumps(data, ensure_ascii=False), datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")),
+    )
+    con.commit()
+finally:
+    con.close()
+PY
