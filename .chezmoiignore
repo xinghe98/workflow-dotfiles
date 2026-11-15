@@ -111,3 +111,37 @@ Library/Application Support/Tern/plugin-data
 .config/tern/*.bak*
 .config/tern/settings.*.json
 .local/state/tern
+
+# T3 Code 只同步快捷键、界面设置和服务端设置。
+# 密钥、登录令牌、会话数据库、日志、缓存和运行时留在本机。
+.t3/bin
+.t3/caches
+.t3/scratch
+.t3/tools
+.t3/usage-host-id
+.t3/worktrees
+.t3/userdata/antigravity-tmp
+.t3/userdata/attachments
+.t3/userdata/clerk
+.t3/userdata/logs
+.t3/userdata/opencode-servers
+.t3/userdata/providers
+.t3/userdata/secrets
+.t3/userdata/themes
+.t3/userdata/*.bak
+.t3/userdata/*.sqlite
+.t3/userdata/*.sqlite-*
+.t3/userdata/*-id
+.t3/userdata/anonymous-id
+.t3/userdata/cli-command-first-launch
+.t3/userdata/compacted-at
+.t3/userdata/desktop-last-started-version
+.t3/userdata/desktop-settings.json
+.t3/userdata/keybindings-migrations
+.t3/userdata/model-manifest.json
+.t3/userdata/server-owner.sqlite
+.t3/userdata/server-owner.sqlite-journal
+.t3/userdata/server-runtime.json
+.t3/userdata/shell-environment-cache.json
+.t3/userdata/usage-model-rates.json
+.t3/userdata/usage-scan-cache-*.json

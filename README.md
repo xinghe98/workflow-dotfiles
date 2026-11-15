@@ -1,6 +1,6 @@
 # Workflow Dotfiles
 
-使用 chezmoi 和 Git 管理 Zellij、Herdr、Tern、OMP、Alacritty、Kitty、OpenCode 和 Zeron 配置。
+使用 chezmoi 和 Git 管理 Zellij、Herdr、Tern、OMP、Alacritty、Kitty、OpenCode、Zeron 和 T3 Code 配置。
 
 | 平台 | 终端默认启动 | Alacritty 配置位置 | Kitty 配置位置 |
 |---|---|---|---|
@@ -623,6 +623,33 @@ chezmoi edit --apply "$env:LOCALAPPDATA\Zeron\composer-defaults.json"
 Zeron 的账户、设备身份、会话、日志和下载缓存不纳入本仓库；macOS / Linux
 不会部署这些 Windows 配置路径。
 
+
+### T3 Code
+
+`~/.t3/userdata/keybindings.json` 与 `client-settings.json` 由 chezmoi 原样管理，
+`settings.json` 由模板生成。Antigravity 的可执行文件路径用家目录拼接，
+Windows 不写死路径，交给本机 PATH。三份文件在各系统都部署到用户主目录下的
+`.t3/userdata`。
+
+不管理密钥、Clerk 与 provider 令牌、会话数据库、窗口位置、日志、缓存、主题目录
+和运行时。这些路径已写入 `.chezmoiignore`，避免整目录 `chezmoi add` 把它们带进仓库。
+本仓库是公开的，不要把令牌或 `secrets/` 加进来。
+
+在 T3 Code 里改完快捷键或界面后，退出或等设置落盘，再更新仓库：
+
+```sh
+chezmoi re-add ~/.t3/userdata/keybindings.json ~/.t3/userdata/client-settings.json
+```
+
+`settings.json` 是模板，`re-add` 不会改写它。provider 开关或二进制路径变了，
+直接改 `private_dot_t3/private_userdata/settings.json.tmpl`。改快捷键也可以：
+
+```sh
+chezmoi edit --apply ~/.t3/userdata/keybindings.json
+```
+
+应用前 T3 Code 可能会改写正在使用的文件；有冲突时先看 `chezmoi diff`，再决定保留哪边。
+
 ### 从应用更新备份
 
 直接在软件中修改配置后，退出 Zeron，再将已管理文件更新到仓库：
@@ -630,7 +657,10 @@ Zeron 的账户、设备身份、会话、日志和下载缓存不纳入本仓�
 ```powershell
 chezmoi re-add "$env:USERPROFILE\.config\opencode" "$env:LOCALAPPDATA\Zeron"
 chezmoi re-add "$env:USERPROFILE\.cc-switch\skills\impeccable"
+chezmoi re-add "$env:USERPROFILE\.t3\userdata\keybindings.json" "$env:USERPROFILE\.t3\userdata\client-settings.json"
 ```
+
+`~/.t3/userdata/settings.json` 由模板生成，不要 `re-add`。
 
 `re-add` 保留加密属性，且不会覆盖模板。新增命令、主题或技能文件需要另行
 `chezmoi add <文件路径>`；主配置首次纳管或重新添加时使用
