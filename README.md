@@ -1,6 +1,6 @@
 # Workflow Dotfiles
 
-使用 chezmoi 和 Git 管理 Zellij、Herdr、Tern、OMP、Alacritty、Kitty、OpenCode、Zeron 和 T3 Code 配置。
+使用 chezmoi 和 Git 管理 Zellij、Herdr、Tern、OMP、Alacritty、Kitty、OpenCode、Zeron、T3 Code 和 Paseo 配置。
 
 | 平台 | 终端默认启动 | Alacritty 配置位置 | Kitty 配置位置 |
 |---|---|---|---|
@@ -650,6 +650,30 @@ chezmoi edit --apply ~/.t3/userdata/keybindings.json
 
 应用前 T3 Code 可能会改写正在使用的文件；有冲突时先看 `chezmoi diff`，再决定保留哪边。
 
+### Paseo
+
+`~/.paseo/keybindings.json` 是 Paseo 快捷键覆盖表，由 chezmoi 原样管理，源文件在
+`dot_paseo/keybindings.json`。这是配置备份，不改 `paseo-tern-keybinds` 工程。
+
+插件列表：
+
+- `~/.paseo/plugins/sources.json`：注册表插件，原样管理。当前是 `agy-acp`、`paseo-magpie` 和 `agent-context`。
+- `~/.paseo/directory-plugins.json`：本地目录插件。路径用家目录拼接，当前只有 `tern-keybinds`。
+  apply 后把它合并进 `~/.paseo/config.json` 的 `plugins`，不改动注册表插件的安装路径，也不动 relay、监听地址和 provider 开关。
+
+不管理 daemon 身份、凭据、日志、本地模型、会话、插件 `node_modules` 和 `config.json` 的其余字段。
+本仓库是公开的，不要把 `daemon-keypair.json` 或 `local-credential` 加进来。
+注册表插件的安装目录含本机哈希，换机器后需要按 `sources.json` 重新 `paseo plugin add`。
+
+```sh
+chezmoi edit --apply ~/.paseo/keybindings.json
+chezmoi edit --apply ~/.paseo/plugins/sources.json
+```
+
+本地目录插件的路径变了，改 `dot_paseo/directory-plugins.json.tmpl`，不要 `re-add` 生成文件。
+
+
+
 ### 从应用更新备份
 
 直接在软件中修改配置后，退出 Zeron，再将已管理文件更新到仓库：
@@ -658,6 +682,8 @@ chezmoi edit --apply ~/.t3/userdata/keybindings.json
 chezmoi re-add "$env:USERPROFILE\.config\opencode" "$env:LOCALAPPDATA\Zeron"
 chezmoi re-add "$env:USERPROFILE\.cc-switch\skills\impeccable"
 chezmoi re-add "$env:USERPROFILE\.t3\userdata\keybindings.json" "$env:USERPROFILE\.t3\userdata\client-settings.json"
+chezmoi re-add "$env:USERPROFILE\.paseo\plugins\sources.json"
+chezmoi re-add "$env:USERPROFILE\.paseo\keybindings.json"
 ```
 
 `~/.t3/userdata/settings.json` 由模板生成，不要 `re-add`。

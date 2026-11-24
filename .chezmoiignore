@@ -145,3 +145,27 @@ Library/Application Support/Tern/plugin-data
 .t3/userdata/shell-environment-cache.json
 .t3/userdata/usage-model-rates.json
 .t3/userdata/usage-scan-cache-*.json
+
+# Paseo 只管理快捷键与插件列表。身份、日志、模型、会话和插件安装树不入库。
+.paseo/agents
+.paseo/agent-requests
+.paseo/cli-client-id
+.paseo/config.json
+.paseo/creations
+.paseo/daemon-keypair.json
+.paseo/daemon.log
+.paseo/daemon.log.*
+.paseo/desktop-attachments
+.paseo/finish-subscriptions.json
+.paseo/local-credential
+.paseo/models
+.paseo/opencode-home
+.paseo/paseo.pid
+.paseo/plugins/*
+!.paseo/plugins/sources.json
+.paseo/push-tokens.json
+.paseo/runtime
+.paseo/schedules
+.paseo/server-id
+.paseo/terminal-worker
+.paseo/terminal-worker.log

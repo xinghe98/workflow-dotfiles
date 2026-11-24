@@ -1,0 +1,32 @@
+{{- if eq .chezmoi.os "windows" -}}
+# {{ include "dot_paseo/directory-plugins.json.tmpl" | sha256sum }}
+$ErrorActionPreference = "Stop"
+$config = Join-Path $HOME ".paseo\config.json"
+$list = Join-Path $HOME ".paseo\directory-plugins.json"
+if (-not (Test-Path -LiteralPath $config) -or -not (Test-Path -LiteralPath $list)) { exit 0 }
+$py = Get-Command python -ErrorAction SilentlyContinue
+if (-not $py) { $py = Get-Command python3 -ErrorAction SilentlyContinue }
+if (-not $py) { exit 0 }
+@'
+import json, sys
+
+config_path, list_path = sys.argv[1], sys.argv[2]
+with open(config_path, encoding="utf-8") as fh:
+    config = json.load(fh)
+with open(list_path, encoding="utf-8") as fh:
+    directory_plugins = json.load(fh)
+if not isinstance(config, dict) or not isinstance(directory_plugins, dict):
+    raise SystemExit(0)
+plugins = config.get("plugins")
+if not isinstance(plugins, dict):
+    plugins = {}
+    config["plugins"] = plugins
+plugins.update(directory_plugins)
+encoded = json.dumps(config, indent=2, ensure_ascii=False) + "\n"
+with open(config_path, encoding="utf-8") as fh:
+    current = fh.read()
+if current != encoded:
+    with open(config_path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(encoded)
+'@ | & $py.Source - $config $list
+{{ end -}}

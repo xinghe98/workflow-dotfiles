@@ -1,0 +1,25 @@
+{
+  "agy-acp": {
+    "kind": "npm",
+    "registry": {
+      "url": "https://plugins.paseo.sh",
+      "id": "fdkevin0/agy-acp"
+    }
+  },
+  "paseo-magpie": {
+    "kind": "git",
+    "remote": "https://github.com/kogekiplay/paseo-magpie.git",
+    "registry": {
+      "url": "https://plugins.paseo.sh",
+      "id": "kogekiplay/magpie"
+    }
+  },
+  "agent-context": {
+    "kind": "git",
+    "remote": "https://github.com/508-dev/paseo-plugins.git",
+    "registry": {
+      "url": "https://plugins.paseo.sh",
+      "id": "508-dev/agent-context"
+    }
+  }
+}

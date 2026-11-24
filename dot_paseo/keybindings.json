@@ -1,0 +1,10 @@
+{
+  "workspace-navigate-index-ctrl-digit-non-mac": null,
+  "workspace-tab-navigate-index-alt-digit-desktop": "Ctrl+Digit",
+  "workspace-tab-navigate-relative-alt-shift-right": "Ctrl+Tab",
+  "workspace-tab-navigate-relative-alt-shift-left": "Ctrl+Shift+Tab",
+  "workspace-tab-new-ctrl-t-non-mac": "Alt+T",
+  "workspace-new-ctrl-n-non-mac": "Alt+Shift+T",
+  "view-toggle-focus-ctrl-shift-f-non-mac": "Alt+F",
+  "message-input-mode-cycle-shift-tab": null
+}
